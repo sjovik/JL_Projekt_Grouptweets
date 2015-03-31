@@ -10,4 +10,6 @@
 
 @interface JLITweetManager : NSObject
 
+-(void)fetchTimeLine;
+
 @end

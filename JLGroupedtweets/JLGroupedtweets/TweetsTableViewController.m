@@ -7,6 +7,7 @@
 //
 
 #import "TweetsTableViewController.h"
+#import "JLITweetManager.h"
 
 // For testing
 #import "Accounts/Accounts.h"
@@ -22,11 +23,12 @@
 
 @implementation TweetsTableViewController
 
-
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    
+    JLITweetManager *twManager = [[JLITweetManager alloc] init];
+    [twManager fetchTimeLine];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
