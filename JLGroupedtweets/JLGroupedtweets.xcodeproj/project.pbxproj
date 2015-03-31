@@ -10,11 +10,14 @@
 		8FF8C6521AC6DF9A00E68EE9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C6511AC6DF9A00E68EE9 /* main.m */; };
 		8FF8C6551AC6DF9A00E68EE9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C6541AC6DF9A00E68EE9 /* AppDelegate.m */; };
 		8FF8C6581AC6DF9A00E68EE9 /* JLGroupedtweets.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C6561AC6DF9A00E68EE9 /* JLGroupedtweets.xcdatamodeld */; };
-		8FF8C65B1AC6DF9A00E68EE9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C65A1AC6DF9A00E68EE9 /* ViewController.m */; };
 		8FF8C65E1AC6DF9A00E68EE9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8FF8C65C1AC6DF9A00E68EE9 /* Main.storyboard */; };
 		8FF8C6601AC6DF9A00E68EE9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8FF8C65F1AC6DF9A00E68EE9 /* Images.xcassets */; };
 		8FF8C6631AC6DF9A00E68EE9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8FF8C6611AC6DF9A00E68EE9 /* LaunchScreen.xib */; };
 		8FF8C66F1AC6DF9A00E68EE9 /* JLGroupedtweetsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C66E1AC6DF9A00E68EE9 /* JLGroupedtweetsTests.m */; };
+		8FF8C6791ACA7FE000E68EE9 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FF8C6781ACA7FE000E68EE9 /* Accounts.framework */; };
+		8FF8C67B1ACA7FE900E68EE9 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8FF8C67A1ACA7FE900E68EE9 /* Social.framework */; };
+		8FF8C67E1ACA809700E68EE9 /* TweetsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C67D1ACA809700E68EE9 /* TweetsTableViewController.m */; };
+		8FF8C6821ACA84E600E68EE9 /* JLITweetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C6811ACA84E600E68EE9 /* JLITweetManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,14 +37,18 @@
 		8FF8C6531AC6DF9A00E68EE9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8FF8C6541AC6DF9A00E68EE9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8FF8C6571AC6DF9A00E68EE9 /* JLGroupedtweets.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = JLGroupedtweets.xcdatamodel; sourceTree = "<group>"; };
-		8FF8C6591AC6DF9A00E68EE9 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		8FF8C65A1AC6DF9A00E68EE9 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		8FF8C65D1AC6DF9A00E68EE9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8FF8C65F1AC6DF9A00E68EE9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8FF8C6621AC6DF9A00E68EE9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		8FF8C6681AC6DF9A00E68EE9 /* JLGroupedtweetsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JLGroupedtweetsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FF8C66D1AC6DF9A00E68EE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FF8C66E1AC6DF9A00E68EE9 /* JLGroupedtweetsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLGroupedtweetsTests.m; sourceTree = "<group>"; };
+		8FF8C6781ACA7FE000E68EE9 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		8FF8C67A1ACA7FE900E68EE9 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		8FF8C67C1ACA809700E68EE9 /* TweetsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetsTableViewController.h; sourceTree = "<group>"; };
+		8FF8C67D1ACA809700E68EE9 /* TweetsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetsTableViewController.m; sourceTree = "<group>"; };
+		8FF8C6801ACA84E600E68EE9 /* JLITweetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JLITweetManager.h; sourceTree = "<group>"; };
+		8FF8C6811ACA84E600E68EE9 /* JLITweetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JLITweetManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +56,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8FF8C67B1ACA7FE900E68EE9 /* Social.framework in Frameworks */,
+				8FF8C6791ACA7FE000E68EE9 /* Accounts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,9 +71,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8F61D5B21ACA87AD0031BA87 /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				8FF8C67C1ACA809700E68EE9 /* TweetsTableViewController.h */,
+				8FF8C67D1ACA809700E68EE9 /* TweetsTableViewController.m */,
+			);
+			name = TableView;
+			sourceTree = "<group>";
+		};
 		8FF8C6431AC6DF9900E68EE9 = {
 			isa = PBXGroup;
 			children = (
+				8FF8C67A1ACA7FE900E68EE9 /* Social.framework */,
+				8FF8C6781ACA7FE000E68EE9 /* Accounts.framework */,
 				8FF8C64E1AC6DF9A00E68EE9 /* JLGroupedtweets */,
 				8FF8C66B1AC6DF9A00E68EE9 /* JLGroupedtweetsTests */,
 				8FF8C64D1AC6DF9A00E68EE9 /* Products */,
@@ -83,10 +103,8 @@
 		8FF8C64E1AC6DF9A00E68EE9 /* JLGroupedtweets */ = {
 			isa = PBXGroup;
 			children = (
-				8FF8C6531AC6DF9A00E68EE9 /* AppDelegate.h */,
-				8FF8C6541AC6DF9A00E68EE9 /* AppDelegate.m */,
-				8FF8C6591AC6DF9A00E68EE9 /* ViewController.h */,
-				8FF8C65A1AC6DF9A00E68EE9 /* ViewController.m */,
+				8F61D5B21ACA87AD0031BA87 /* TableView */,
+				8FF8C67F1ACA843200E68EE9 /* Data */,
 				8FF8C65C1AC6DF9A00E68EE9 /* Main.storyboard */,
 				8FF8C65F1AC6DF9A00E68EE9 /* Images.xcassets */,
 				8FF8C6611AC6DF9A00E68EE9 /* LaunchScreen.xib */,
@@ -99,6 +117,8 @@
 		8FF8C64F1AC6DF9A00E68EE9 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8FF8C6531AC6DF9A00E68EE9 /* AppDelegate.h */,
+				8FF8C6541AC6DF9A00E68EE9 /* AppDelegate.m */,
 				8FF8C6501AC6DF9A00E68EE9 /* Info.plist */,
 				8FF8C6511AC6DF9A00E68EE9 /* main.m */,
 			);
@@ -120,6 +140,15 @@
 				8FF8C66D1AC6DF9A00E68EE9 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8FF8C67F1ACA843200E68EE9 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				8FF8C6801ACA84E600E68EE9 /* JLITweetManager.h */,
+				8FF8C6811ACA84E600E68EE9 /* JLITweetManager.m */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -223,9 +252,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FF8C6551AC6DF9A00E68EE9 /* AppDelegate.m in Sources */,
+				8FF8C67E1ACA809700E68EE9 /* TweetsTableViewController.m in Sources */,
 				8FF8C6521AC6DF9A00E68EE9 /* main.m in Sources */,
-				8FF8C65B1AC6DF9A00E68EE9 /* ViewController.m in Sources */,
 				8FF8C6581AC6DF9A00E68EE9 /* JLGroupedtweets.xcdatamodeld in Sources */,
+				8FF8C6821ACA84E600E68EE9 /* JLITweetManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -416,6 +446,7 @@
 				8FF8C6741AC6DF9A00E68EE9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8FF8C6751AC6DF9A00E68EE9 /* Build configuration list for PBXNativeTarget "JLGroupedtweetsTests" */ = {
 			isa = XCConfigurationList;
@@ -424,6 +455,7 @@
 				8FF8C6771AC6DF9A00E68EE9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
