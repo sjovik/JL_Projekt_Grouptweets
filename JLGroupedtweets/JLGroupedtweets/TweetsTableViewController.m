@@ -7,28 +7,34 @@
 //
 
 #import "TweetsTableViewController.h"
-#import "JLITweetManager.h"
-
-// For testing
-#import "Accounts/Accounts.h"
-#import "Social/Social.h"
-//
+#import "JLITweet.h"
 
 
 @interface TweetsTableViewController ()
 
+@property (nonatomic) JLITweetManager *tweetManager;
 @property (nonatomic) NSArray *tweets;
 
 @end
 
 @implementation TweetsTableViewController
 
+
+#pragma mark tweetManager callbacks
+
+-(void)timelineFetched {
+    self.tweets = self.tweetManager.timelineTweets;
+    [self.tableView reloadData];
+}
+
+#pragma mark onLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     
-    JLITweetManager *twManager = [[JLITweetManager alloc] init];
-    [twManager fetchTimeLine];
+    self.tweetManager = [[JLITweetManager alloc] init];
+    self.tweetManager.delegate = self;
+    [self.tweetManager fetchTimeline];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -54,15 +60,17 @@
     return self.tweets.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
     
-    // Configure the cell...
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup" forIndexPath:indexPath];
+    
+    JLITweet *tweetGroup = self.tweets[indexPath.row];
+    cell.textLabel.text = tweetGroup.author;
     
     return cell;
 }
-*/
+
 
 /*
 // Override to support conditional editing of the table view.

@@ -7,13 +7,23 @@
 //
 
 #import "JLITweetManager.h"
+
 #import "Social/Social.h"
 #import "Accounts/Accounts.h"
+#import "Twitter/Twitter.h"
+
+#import "JLITweet.h"
 
 @implementation JLITweetManager
 
+-(NSArray *)timelineTweets {
+    if (!_timelineTweets) {
+        _timelineTweets = [[NSMutableArray alloc] init];
+    }
+    return _timelineTweets;
+}
 
--(void)fetchTimeLine {
+-(void)fetchTimeline {
     
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     
@@ -63,20 +73,24 @@
                                                                   return;
                                                               }
                                                               
-                                                              NSLog(@"urlresp: %@", urlResponse);
-
-                                                              NSLog(@"Data: %@", tweetsData);
-                                                              NSLog(@"Tweets: %@", tweetsData[0][@"text"]);
-
+                                                              for (NSDictionary *tweetData in tweetsData) {
+                                                                  
+                                                                  JLITweet *tweet = [[JLITweet alloc] initWithAuthor:tweetData[@"user"][@"name"]
+                                                                                                                text:tweetData[@"text"]];
+                                                                  [self.timelineTweets addObject:tweet];
+                                                              }
                                                               
+                                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                                  [self.delegate timelineFetched];
+                                                              });
                                                           }
                                                       }];
                                                   }
                                               } else {
-                                                  NSLog(@"request to account not granted");
+                                                  NSLog(@"Request to account not granted");
                                               }
                                               if (error) {
-                                                  NSLog(@"error");
+                                                  NSLog(@"Error: %@", error.localizedDescription);
                                               }
                                           }];
     

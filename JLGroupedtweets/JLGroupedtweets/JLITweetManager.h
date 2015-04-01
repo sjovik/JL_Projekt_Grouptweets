@@ -8,8 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol JLITweetManagerDelegate <NSObject>
+
+@optional
+
+-(void)timelineFetched;
+
+@end
+
 @interface JLITweetManager : NSObject
 
--(void)fetchTimeLine;
+@property (nonatomic, weak) id<JLITweetManagerDelegate> delegate;
+
+@property (nonatomic) NSMutableArray *timelineTweets;
+
+-(void)fetchTimeline;
 
 @end

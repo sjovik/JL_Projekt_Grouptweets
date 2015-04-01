@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JLITweetManager.h"
 
-@interface TweetsTableViewController : UITableViewController
+@interface TweetsTableViewController : UITableViewController<JLITweetManagerDelegate>
 
 @end
