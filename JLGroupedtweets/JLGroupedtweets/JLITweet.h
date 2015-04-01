@@ -12,7 +12,8 @@
 
 @property (nonatomic, readonly) NSString *text;
 @property (nonatomic, readonly) NSString *author;
+@property (nonatomic, readonly) NSDate *dateTime;
 
--(instancetype)initWithAuthor:(NSString *)author text:(NSString *)text;
+-(instancetype)initWithAuthor:(NSString *)author text:(NSString *)text date:(NSString *)date;
 
 @end

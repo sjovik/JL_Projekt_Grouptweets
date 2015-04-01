@@ -13,16 +13,43 @@
 #import "Twitter/Twitter.h"
 
 #import "JLITweet.h"
+@interface JLITweetManager()
+@property (nonatomic) NSMutableArray *downloadedTweets;
+@end
+
 
 @implementation JLITweetManager
 
--(NSArray *)timelineTweets {
-    if (!_timelineTweets) {
-        _timelineTweets = [[NSMutableArray alloc] init];
+#pragma mark Property getters
+-(NSArray *)downloadedTweets {
+    if (!_downloadedTweets) {
+        _downloadedTweets = [[NSMutableArray alloc] init];
     }
-    return _timelineTweets;
+    return _downloadedTweets;
 }
 
+-(NSMutableDictionary *)tweetsByAuthor {
+    if (!_tweetsByAuthor) {
+        _tweetsByAuthor = [[NSMutableDictionary alloc] init];
+    }
+    
+    return _tweetsByAuthor;
+}
+
+#pragma mark Sorting
+-(void)sortTweetsByAuthor {
+    for (JLITweet *tweet in self.downloadedTweets) {
+        NSArray *authorTweets;
+        if (self.tweetsByAuthor[tweet.author]) {
+            authorTweets = [self.tweetsByAuthor[tweet.author] arrayByAddingObject:tweet];
+        } else {
+            authorTweets = @[tweet];
+        }
+        [self.tweetsByAuthor setObject:authorTweets forKey:tweet.author];
+    }
+}
+
+#pragma mark TwitterAPI connections
 -(void)fetchTimeline {
     
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
@@ -42,7 +69,7 @@
                                                       }
                                                       NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
                                                       NSDictionary *parameters = @{
-                                                                                        @"count" : @"10",
+                                                                                        @"count" : @"20",
                                                                                         @"include_entities" : @"1"
                                                                                    };
                                                       SLRequest *tweetsRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
@@ -76,11 +103,15 @@
                                                               for (NSDictionary *tweetData in tweetsData) {
                                                                   
                                                                   JLITweet *tweet = [[JLITweet alloc] initWithAuthor:tweetData[@"user"][@"name"]
-                                                                                                                text:tweetData[@"text"]];
-                                                                  [self.timelineTweets addObject:tweet];
+                                                                                                                text:tweetData[@"text"]
+                                                                                                                date:tweetData[@"created_at"]];
+                                                                  NSLog(@"%@: \n\n%@\n\n%@", tweet.author, tweet.text, tweet.dateTime);
+                                                                  [self.downloadedTweets insertObject:tweet atIndex:0];
                                                               }
                                                               
+                                                              [self sortTweetsByAuthor];
                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                  NSLog(@"Timeline fetched");
                                                                   [self.delegate timelineFetched];
                                                               });
                                                           }

@@ -20,7 +20,8 @@
 
 @property (nonatomic, weak) id<JLITweetManagerDelegate> delegate;
 
-@property (nonatomic) NSMutableArray *timelineTweets;
+
+@property (nonatomic) NSMutableDictionary *tweetsByAuthor;
 
 -(void)fetchTimeline;
 

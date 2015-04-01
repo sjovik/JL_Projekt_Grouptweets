@@ -13,7 +13,7 @@
 @interface TweetsTableViewController ()
 
 @property (nonatomic) JLITweetManager *tweetManager;
-@property (nonatomic) NSArray *tweets;
+@property (nonatomic) NSArray *tweetGroups;
 
 @end
 
@@ -23,8 +23,21 @@
 #pragma mark tweetManager callbacks
 
 -(void)timelineFetched {
-    self.tweets = self.tweetManager.timelineTweets;
+    [self sortByTime];
     [self.tableView reloadData];
+}
+
+-(void)sortByTime {
+    
+    NSMutableArray *orderedTweetGroups = [[NSMutableArray alloc] init];
+    for (NSString *key in self.tweetManager.tweetsByAuthor) {
+        JLITweet *tweet = [self.tweetManager.tweetsByAuthor[key] lastObject];
+
+        [orderedTweetGroups addObject:tweet];
+    }
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateTime" ascending:NO];
+    [orderedTweetGroups sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    self.tweetGroups = orderedTweetGroups;
 }
 
 #pragma mark onLoad
@@ -57,7 +70,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return self.tweets.count;
+    return self.tweetGroups.count;
 }
 
 
@@ -65,7 +78,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup" forIndexPath:indexPath];
     
-    JLITweet *tweetGroup = self.tweets[indexPath.row];
+    JLITweet *tweetGroup = self.tweetGroups[indexPath.row];
     cell.textLabel.text = tweetGroup.author;
     
     return cell;
