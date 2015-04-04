@@ -8,6 +8,7 @@
 
 #import "TweetsTableViewController.h"
 #import "JLITweet.h"
+#import "UIColorExtentions.h"
 
 
 @interface TweetsTableViewController ()
@@ -80,6 +81,9 @@
     
     JLITweet *tweetGroup = self.tweetGroups[indexPath.row];
     cell.textLabel.text = tweetGroup.author;
+    if (tweetGroup.colorString) {
+        cell.backgroundColor = [UIColor colorwithHexString:tweetGroup.colorString];
+    }
     
     return cell;
 }

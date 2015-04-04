@@ -13,6 +13,7 @@
 @property (nonatomic, readonly) NSString *text;
 @property (nonatomic, readonly) NSString *author;
 @property (nonatomic, readonly) NSDate *dateTime;
+@property (nonatomic) NSString *colorString;
 
 -(instancetype)initWithAuthor:(NSString *)author text:(NSString *)text date:(NSString *)date;
 

@@ -105,7 +105,8 @@
                                                                   JLITweet *tweet = [[JLITweet alloc] initWithAuthor:tweetData[@"user"][@"name"]
                                                                                                                 text:tweetData[@"text"]
                                                                                                                 date:tweetData[@"created_at"]];
-                                                                  NSLog(@"%@: \n\n%@\n\n%@", tweet.author, tweet.text, tweet.dateTime);
+                                                                  tweet.colorString = tweetData[@"user"][@"profile_background_color"];
+                                                                  // NSLog(@"%@: %@", tweet.author, tweetData[@"user"][@"profile_background_color"]);
                                                                   [self.downloadedTweets insertObject:tweet atIndex:0];
                                                               }
                                                               
