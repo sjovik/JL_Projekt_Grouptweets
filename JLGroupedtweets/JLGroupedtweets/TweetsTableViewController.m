@@ -15,8 +15,6 @@
 
 @property (nonatomic) JLITweetManager *tweetManager;
 @property (nonatomic) NSArray *tweetGroups;
-@property (nonatomic) NSArray *expandedSectionTweets;
-@property (nonatomic) long expandedSectionIndexRow;
 
 @end
 
@@ -47,10 +45,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
     self.tweetManager = [[JLITweetManager alloc] init];
     self.tweetManager.delegate = self;
     [self.tweetManager fetchTimeline];
     
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,47 +71,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    
-    if (self.expandedSectionTweets.count>0) {
-        return self.expandedSectionTweets.count + self.tweetGroups.count;
-    }
     return self.tweetGroups.count;
-}
-
--(NSArray *)deleteIndexPathsInSelection:(long)selectionRow {
-    NSMutableArray *indexPathsToRemove = [[NSMutableArray alloc] initWithCapacity:self.expandedSectionTweets.count];
-    for (int i = 0; i < self.expandedSectionTweets.count; i++) {
-        [indexPathsToRemove addObject:[NSIndexPath indexPathForRow:(selectionRow+i+1) inSection:0]];
-    }
-    return indexPathsToRemove;
-}
-
--(NSArray *)addIndexPathsInSelection:(long)selectionRow {
-    self.expandedSectionIndexRow = selectionRow;
-    NSMutableArray *indexPathsToRemove = [[NSMutableArray alloc] initWithCapacity:self.expandedSectionTweets.count];
-    for (int i = 0; i < self.expandedSectionTweets.count; i++) {
-        [indexPathsToRemove addObject:[NSIndexPath indexPathForRow:(selectionRow+i+1) inSection:0]];
-    }
-    return indexPathsToRemove;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.tableView beginUpdates];
-    
-    if (self.expandedSectionTweets) {
-        NSArray *deleteIndexPaths = [self deleteIndexPathsInSelection:self.expandedSectionIndexRow];
-        [self.tableView deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationFade];
-    }
-    NSMutableArray *selectedGroupTweets = [[NSMutableArray alloc] init];
-    NSString *tweetGroupSelected = [self.tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-    for (JLITweet *tweet in self.tweetManager.tweetsByAuthor[tweetGroupSelected]) {
-        [selectedGroupTweets addObject:tweet];
-    }
-    self.expandedSectionTweets = selectedGroupTweets;
-    NSArray *insertIndexPaths = [self addIndexPathsInSelection:indexPath.row];
-    [self.tableView insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-    [self.tableView endUpdates];
-    
 }
 
 
@@ -115,17 +79,7 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup" forIndexPath:indexPath];
     
-    JLITweet *tweetGroup;
-    if (self.expandedSectionTweets.count>0) {
-        NSMutableArray *array = [self.tweetGroups mutableCopy];
-        [array replaceObjectsInRange:NSMakeRange(self.expandedSectionIndexRow, 0)
-                withObjectsFromArray:self.expandedSectionTweets];
-        tweetGroup = array[indexPath.row];
-    }else{
-        tweetGroup = self.tweetGroups[indexPath.row];
-    }
-    
-    
+    JLITweet *tweetGroup = self.tweetGroups[indexPath.row];
     cell.textLabel.text = tweetGroup.author;
     if (tweetGroup.colorString) {
         cell.backgroundColor = [UIColor colorwithHexString:tweetGroup.colorString];
@@ -134,6 +88,40 @@
     return cell;
 }
 
+
+/*
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+*/
+
+/*
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
+}
+*/
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+}
+*/
+
+/*
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+*/
 
 /*
 #pragma mark - Navigation
