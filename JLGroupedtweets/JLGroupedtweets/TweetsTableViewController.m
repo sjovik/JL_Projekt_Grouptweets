@@ -15,6 +15,7 @@
 
 @property (nonatomic) JLITweetManager *tweetManager;
 @property (nonatomic) NSArray *tweetGroups;
+@property (nonatomic) NSInteger expandedSection;
 
 @end
 
@@ -49,6 +50,8 @@
     self.tweetManager = [[JLITweetManager alloc] init];
     self.tweetManager.delegate = self;
     [self.tweetManager fetchTimeline];
+    
+    self.expandedSection = -1;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -64,17 +67,84 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return 1;
+    
+    return (section == self.expandedSection) ?
+        ((NSArray*)self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[section]).author]).count
+    :   1;
+        
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    // If first row of section, expand section; else segue to full size tweet view.
+    if (!indexPath.row) {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
+        NSInteger clickedSection = indexPath.section;
+        BOOL isExpanded = (self.expandedSection != -1);
+        NSInteger numberOfRowsToClose = 0;
+        NSInteger sectionToClose = 0;
+        NSInteger numberOfRowsToOpen = 0;
+        NSMutableArray *rowsToClose = [NSMutableArray array];
+        NSMutableArray *rowsToOpen = [NSMutableArray array];
+        
+        if (isExpanded) {
+            
+            if (self.expandedSection == clickedSection) {
+                numberOfRowsToClose = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
+                sectionToClose = clickedSection;
+                self.expandedSection = -1;
+            } else {
+                numberOfRowsToClose = [self tableView:self.tableView numberOfRowsInSection:self.expandedSection];
+                sectionToClose = self.expandedSection;
+                self.expandedSection = clickedSection;
+                numberOfRowsToOpen = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
+            }
+        } else {
+            self.expandedSection = clickedSection;
+            numberOfRowsToOpen = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
+        }
+  
+        [self.tableView beginUpdates];
+        if (numberOfRowsToClose > 0) {
+            
+            for (int i=1; i<numberOfRowsToClose; i++)
+            {
+                NSIndexPath *row = [NSIndexPath indexPathForRow:i
+                                                      inSection:sectionToClose];
+                [rowsToClose addObject:row];
+            }
+            
+            [tableView deleteRowsAtIndexPaths:rowsToClose
+                             withRowAnimation:UITableViewRowAnimationTop];
+        }
+        
+        if (numberOfRowsToOpen > 0) {
+            
+            for (int i=1; i<numberOfRowsToOpen; i++)
+            {
+                NSIndexPath *row = [NSIndexPath indexPathForRow:i
+                                                      inSection:clickedSection];
+                [rowsToOpen addObject:row];
+            }
+            
+            [tableView insertRowsAtIndexPaths:rowsToOpen
+                             withRowAnimation:UITableViewRowAnimationTop];
+        }
+        [self.tableView endUpdates];
+
+        
+        
+    } else {
+        // TODO - link to full size tweet
+    }
+    
+    
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup" forIndexPath:indexPath];
-    
-    NSLog(@"%@", ((JLITweet*)self.tweetGroups[indexPath.section]).author);
-    NSLog(@"%@", self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[indexPath.section]).author]);
     
     JLITweet *tweetGroup = [self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[indexPath.section]).author] lastObject];
     cell.textLabel.text = tweetGroup.author;

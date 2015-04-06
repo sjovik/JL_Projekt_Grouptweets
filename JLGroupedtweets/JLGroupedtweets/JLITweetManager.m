@@ -69,7 +69,7 @@
                                                       }
                                                       NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
                                                       NSDictionary *parameters = @{
-                                                                                        @"count" : @"20",
+                                                                                        @"count" : @"30",
                                                                                         @"include_entities" : @"1"
                                                                                    };
                                                       SLRequest *tweetsRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
@@ -90,6 +90,7 @@
                                                               NSLog(@"Error: %@", error.localizedDescription);
                                                               return;
                                                           }
+                                                          
                                                           if (responseData) {
                                                               NSError *jsonError = nil;
                                                               NSArray *tweetsData = [NSJSONSerialization JSONObjectWithData:responseData
