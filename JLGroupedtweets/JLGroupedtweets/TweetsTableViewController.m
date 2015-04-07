@@ -85,8 +85,6 @@
         NSInteger numberOfRowsToClose = 0;
         NSInteger sectionToClose = 0;
         NSInteger numberOfRowsToOpen = 0;
-        NSMutableArray *rowsToClose = [NSMutableArray array];
-        NSMutableArray *rowsToOpen = [NSMutableArray array];
         
         if (isExpanded) {
             
@@ -108,49 +106,45 @@
         [self.tableView beginUpdates];
         if (numberOfRowsToClose > 0) {
             
-            for (int i=1; i<numberOfRowsToClose; i++)
-            {
-                NSIndexPath *row = [NSIndexPath indexPathForRow:i
-                                                      inSection:sectionToClose];
-                [rowsToClose addObject:row];
-            }
-            
-            [tableView deleteRowsAtIndexPaths:rowsToClose
+            [tableView deleteRowsAtIndexPaths:[self toggleNumOfRows:numberOfRowsToClose inSection:sectionToClose]
                              withRowAnimation:UITableViewRowAnimationTop];
         }
-        
         if (numberOfRowsToOpen > 0) {
-            
-            for (int i=1; i<numberOfRowsToOpen; i++)
-            {
-                NSIndexPath *row = [NSIndexPath indexPathForRow:i
-                                                      inSection:clickedSection];
-                [rowsToOpen addObject:row];
-            }
-            
-            [tableView insertRowsAtIndexPaths:rowsToOpen
+
+            [tableView insertRowsAtIndexPaths:[self toggleNumOfRows:numberOfRowsToOpen inSection:clickedSection]
                              withRowAnimation:UITableViewRowAnimationTop];
         }
         [self.tableView endUpdates];
-
-        
         
     } else {
         // TODO - link to full size tweet
     }
+}
+
+-(NSArray *)toggleNumOfRows:(NSInteger)num inSection:(NSInteger)section {
+    NSMutableArray *rowsToToggle = [NSMutableArray array];
     
+    for (int i=1; i<num; i++)
+    {
+        NSIndexPath *row = [NSIndexPath indexPathForRow:i
+                                              inSection:section];
+        [rowsToToggle addObject:row];
+    }
     
+    return rowsToToggle;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup"
+                                                            forIndexPath:indexPath];
     
-    JLITweet *tweetGroup = [self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[indexPath.section]).author] lastObject];
-    cell.textLabel.text = tweetGroup.author;
-    cell.detailTextLabel.text = tweetGroup.text;
-    if (tweetGroup.colorString) {
-        cell.backgroundColor = [UIColor colorwithHexString:tweetGroup.colorString];
+    NSArray *tweetsByAuthor = self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[indexPath.section]).author];
+    JLITweet *tweet = tweetsByAuthor[(tweetsByAuthor.count - 1) - indexPath.row]; // in reversed order
+    cell.textLabel.text = tweet.author;
+    cell.detailTextLabel.text = tweet.text;
+    if (tweet.colorString) {
+        cell.backgroundColor = [UIColor colorwithHexString:tweet.colorString];
     }
     
     return cell;
