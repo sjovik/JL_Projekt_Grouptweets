@@ -70,8 +70,9 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
     return (section == self.expandedSection) ?
-        ((NSArray*)self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[section]).author]).count
-    :   1;
+        // +1 because header tweet repeated in expanded form
+        ((NSArray*)self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[section]).author]).count + 1
+    : 1;
         
 }
 
@@ -137,11 +138,22 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup"
-                                                            forIndexPath:indexPath];
-    
+    UITableViewCell *cell;
+    JLITweet *tweet;
     NSArray *tweetsByAuthor = self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[indexPath.section]).author];
-    JLITweet *tweet = tweetsByAuthor[(tweetsByAuthor.count - 1) - indexPath.row]; // in reversed order
+    
+    if (!indexPath.row) { // first row - group header
+        cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup"
+                                          forIndexPath:indexPath];
+        
+        tweet = [tweetsByAuthor lastObject];
+        
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup" // TODO - custom tweet
+                                               forIndexPath:indexPath];
+        tweet = tweetsByAuthor[(tweetsByAuthor.count) - indexPath.row]; // in reversed order
+    }
+     
     cell.textLabel.text = tweet.author;
     cell.detailTextLabel.text = tweet.text;
     if (tweet.colorString) {
