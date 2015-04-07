@@ -11,6 +11,8 @@
 #import "UIColorExtentions.h"
 
 
+static NSInteger const NO_EXPANDED_SECTION = -1;
+
 @interface TweetsTableViewController ()
 
 @property (nonatomic) JLITweetManager *tweetManager;
@@ -46,12 +48,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
     self.tweetManager = [[JLITweetManager alloc] init];
     self.tweetManager.delegate = self;
     [self.tweetManager fetchTimeline];
     
-    self.expandedSection = -1;
+    self.expandedSection = NO_EXPANDED_SECTION;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,7 +82,7 @@
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         
         NSInteger clickedSection = indexPath.section;
-        BOOL isExpanded = (self.expandedSection != -1);
+        BOOL isExpanded = (self.expandedSection != NO_EXPANDED_SECTION);
         NSInteger numberOfRowsToClose = 0;
         NSInteger sectionToClose = 0;
         NSInteger numberOfRowsToOpen = 0;
@@ -91,7 +92,7 @@
             if (self.expandedSection == clickedSection) {
                 numberOfRowsToClose = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
                 sectionToClose = clickedSection;
-                self.expandedSection = -1;
+                self.expandedSection = NO_EXPANDED_SECTION;
             } else {
                 numberOfRowsToClose = [self tableView:self.tableView numberOfRowsInSection:self.expandedSection];
                 sectionToClose = self.expandedSection;
