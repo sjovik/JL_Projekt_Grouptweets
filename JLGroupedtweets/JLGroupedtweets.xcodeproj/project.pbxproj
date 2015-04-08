@@ -10,6 +10,8 @@
 		8F61D5B41ACA8E750031BA87 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F61D5B31ACA8E750031BA87 /* Twitter.framework */; };
 		8F61D5B71ACABB5D0031BA87 /* JLITweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D5B61ACABB5D0031BA87 /* JLITweet.m */; };
 		8F61D5BA1ACEA9180031BA87 /* UIColorExtentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D5B91ACEA9180031BA87 /* UIColorExtentions.m */; };
+		8F61D5BD1AD510360031BA87 /* GroupHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D5BC1AD510360031BA87 /* GroupHeaderCell.m */; };
+		8F61D5C01AD510470031BA87 /* TweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D5BF1AD510470031BA87 /* TweetCell.m */; };
 		8FF8C6521AC6DF9A00E68EE9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C6511AC6DF9A00E68EE9 /* main.m */; };
 		8FF8C6551AC6DF9A00E68EE9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C6541AC6DF9A00E68EE9 /* AppDelegate.m */; };
 		8FF8C6581AC6DF9A00E68EE9 /* JLGroupedtweets.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C6561AC6DF9A00E68EE9 /* JLGroupedtweets.xcdatamodeld */; };
@@ -39,6 +41,10 @@
 		8F61D5B61ACABB5D0031BA87 /* JLITweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JLITweet.m; sourceTree = "<group>"; };
 		8F61D5B81ACEA9180031BA87 /* UIColorExtentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIColorExtentions.h; sourceTree = "<group>"; };
 		8F61D5B91ACEA9180031BA87 /* UIColorExtentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIColorExtentions.m; sourceTree = "<group>"; };
+		8F61D5BB1AD510360031BA87 /* GroupHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupHeaderCell.h; sourceTree = "<group>"; };
+		8F61D5BC1AD510360031BA87 /* GroupHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupHeaderCell.m; sourceTree = "<group>"; };
+		8F61D5BE1AD510470031BA87 /* TweetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetCell.h; sourceTree = "<group>"; };
+		8F61D5BF1AD510470031BA87 /* TweetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetCell.m; sourceTree = "<group>"; };
 		8FF8C64C1AC6DF9A00E68EE9 /* JLGroupedtweets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JLGroupedtweets.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FF8C6501AC6DF9A00E68EE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FF8C6511AC6DF9A00E68EE9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -85,6 +91,10 @@
 			children = (
 				8FF8C67C1ACA809700E68EE9 /* TweetsTableViewController.h */,
 				8FF8C67D1ACA809700E68EE9 /* TweetsTableViewController.m */,
+				8F61D5BB1AD510360031BA87 /* GroupHeaderCell.h */,
+				8F61D5BC1AD510360031BA87 /* GroupHeaderCell.m */,
+				8F61D5BE1AD510470031BA87 /* TweetCell.h */,
+				8F61D5BF1AD510470031BA87 /* TweetCell.m */,
 			);
 			name = TableView;
 			sourceTree = "<group>";
@@ -265,8 +275,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F61D5C01AD510470031BA87 /* TweetCell.m in Sources */,
 				8FF8C6551AC6DF9A00E68EE9 /* AppDelegate.m in Sources */,
 				8F61D5BA1ACEA9180031BA87 /* UIColorExtentions.m in Sources */,
+				8F61D5BD1AD510360031BA87 /* GroupHeaderCell.m in Sources */,
 				8F61D5B71ACABB5D0031BA87 /* JLITweet.m in Sources */,
 				8FF8C67E1ACA809700E68EE9 /* TweetsTableViewController.m in Sources */,
 				8FF8C6521AC6DF9A00E68EE9 /* main.m in Sources */,

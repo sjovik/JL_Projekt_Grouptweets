@@ -53,6 +53,8 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     [self.tweetManager fetchTimeline];
     
     self.expandedSection = NO_EXPANDED_SECTION;
+    
+    self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,6 +76,10 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         ((NSArray*)self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[section]).author]).count + 1
     : 1;
         
+}
+
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewAutomaticDimension;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -140,25 +146,25 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     
     UITableViewCell *cell;
     JLITweet *tweet;
-    NSArray *tweetsByAuthor = self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[indexPath.section]).author];
+    NSArray *tweetsByAuthor = self.tweetManager.tweetsByAuthor[((JLITweet *)self.tweetGroups[indexPath.section]).author];
     
-    if (!indexPath.row) { // first row - group header
+    if (!indexPath.row) { // first row - group header cell
         cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup"
                                           forIndexPath:indexPath];
-        
         tweet = [tweetsByAuthor lastObject];
         
+        if (tweet.colorString) {
+            cell.backgroundColor = [UIColor colorwithHexString:tweet.colorString];
+        }
+        
     } else {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup" // TODO - custom tweet
+        cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
         tweet = tweetsByAuthor[(tweetsByAuthor.count) - indexPath.row]; // in reversed order
+        cell.detailTextLabel.text = tweet.text;
     }
      
     cell.textLabel.text = tweet.author;
-    cell.detailTextLabel.text = tweet.text;
-    if (tweet.colorString) {
-        cell.backgroundColor = [UIColor colorwithHexString:tweet.colorString];
-    }
     
     return cell;
 }
