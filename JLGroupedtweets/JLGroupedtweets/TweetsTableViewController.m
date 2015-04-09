@@ -74,9 +74,11 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
+    float authorTweetCount = ((NSArray*)self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[section]).author]).count;
+    
     return (section == self.expandedSection) ?
         // +1 because header tweet repeated in expanded form
-        ((NSArray*)self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[section]).author]).count + 1
+    (authorTweetCount > 5) ? 6 : authorTweetCount + 1
     : 1;
         
 }
@@ -87,9 +89,10 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     // If first row of section, expand section; else segue to full size tweet view.
     if (!indexPath.row) {
-        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
         
         NSInteger clickedSection = indexPath.section;
         BOOL isExpanded = (self.expandedSection != NO_EXPANDED_SECTION);
@@ -127,8 +130,11 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         }
         [self.tableView endUpdates];
         
+    } else if (indexPath.row == 5){
+        // TODO - gert more tweets
+        NSLog(@"%@", @"hämtar fler tweets...");
     } else {
-        // TODO - link to full size tweet
+        // TODO - länka till fullstorlek tweet.
     }
 }
 
@@ -147,7 +153,7 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    
+    NSLog(@"%ld", (long)indexPath.row);
     JLITweet *tweet;
     NSArray *tweetsByAuthor = self.tweetManager.tweetsByAuthor[((JLITweet *)self.tweetGroups[indexPath.section]).author];
     
@@ -163,12 +169,20 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         cell.groupNameLabel.text = tweet.author;
         return cell;
         
+    } else if (indexPath.row == 5) { // last row - get more tweets.
+        TweetCell *cell;
+        cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
+                                               forIndexPath:indexPath];
+        cell.bodyLabel.text = @"Hämta fler tweets";
+        
+        return cell;
+    
     } else {
         TweetCell *cell;
         cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
         tweet = tweetsByAuthor[(tweetsByAuthor.count) - indexPath.row]; // in reversed order
-        cell.titleLabel.text = tweet.author;
+        // cell.titleLabel.text = tweet.author;
         cell.bodyLabel.text = tweet.text;
         
         if (tweet.colorString) {
