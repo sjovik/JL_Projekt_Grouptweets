@@ -11,5 +11,6 @@
 @interface TweetCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *bodyLabel;
+@property (weak, nonatomic) IBOutlet UIView *authorColorView;
 
 @end

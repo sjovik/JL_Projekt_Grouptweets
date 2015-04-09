@@ -170,6 +170,10 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         tweet = tweetsByAuthor[(tweetsByAuthor.count) - indexPath.row]; // in reversed order
         cell.titleLabel.text = tweet.author;
         cell.bodyLabel.text = tweet.text;
+        
+        if (tweet.colorString) {
+            cell.authorColorView.backgroundColor = [UIColor colorwithHexString:tweet.colorString];
+        }
         return cell;
     }
     
