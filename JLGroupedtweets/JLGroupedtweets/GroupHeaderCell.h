@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface GroupHeaderCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *groupNameLabel;
 
 @end

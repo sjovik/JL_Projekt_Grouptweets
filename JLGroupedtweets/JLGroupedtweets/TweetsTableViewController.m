@@ -9,6 +9,8 @@
 #import "TweetsTableViewController.h"
 #import "JLITweet.h"
 #import "UIColorExtentions.h"
+#import "TweetCell.h"
+#import "GroupHeaderCell.h"
 
 
 static NSInteger const NO_EXPANDED_SECTION = -1;
@@ -54,7 +56,8 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     
     self.expandedSection = NO_EXPANDED_SECTION;
     
-    self.tableView.estimatedRowHeight = UITableViewAutomaticDimension;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 150;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -77,10 +80,10 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     : 1;
         
 }
-
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewAutomaticDimension;
-}
+//
+//-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return UITableViewAutomaticDimension;
+//}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -144,11 +147,12 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell;
+    
     JLITweet *tweet;
     NSArray *tweetsByAuthor = self.tweetManager.tweetsByAuthor[((JLITweet *)self.tweetGroups[indexPath.section]).author];
     
     if (!indexPath.row) { // first row - group header cell
+        GroupHeaderCell *cell;
         cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup"
                                           forIndexPath:indexPath];
         tweet = [tweetsByAuthor lastObject];
@@ -156,17 +160,19 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         if (tweet.colorString) {
             cell.backgroundColor = [UIColor colorwithHexString:tweet.colorString];
         }
+        cell.groupNameLabel.text = tweet.author;
+        return cell;
         
     } else {
+        TweetCell *cell;
         cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
         tweet = tweetsByAuthor[(tweetsByAuthor.count) - indexPath.row]; // in reversed order
-        cell.detailTextLabel.text = tweet.text;
+        cell.titleLabel.text = tweet.author;
+        cell.bodyLabel.text = tweet.text;
+        return cell;
     }
-     
-    cell.textLabel.text = tweet.author;
     
-    return cell;
 }
 
 @end
