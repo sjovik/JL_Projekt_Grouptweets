@@ -15,10 +15,12 @@
 #import "JLITweet.h"
 @interface JLITweetManager()
 @property (nonatomic) NSMutableArray *downloadedTweets;
+@property (nonatomic) NSManagedObjectContext *context;
 @end
 
 
 @implementation JLITweetManager
+
 
 #pragma mark Property getters
 -(NSArray *)downloadedTweets {
@@ -34,6 +36,43 @@
     }
     
     return _tweetsByAuthor;
+}
+
+
+#pragma mark CoreData
+
+-(void)openManagedDocument {
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSURL *docPath = [[fileManager URLsForDirectory:NSDocumentDirectory
+                                          inDomains:NSUserDomainMask] firstObject];
+    NSURL *filePath = [docPath URLByAppendingPathComponent:@"JLITweetsByAuthorCD"];
+    
+    UIManagedDocument *document = [[UIManagedDocument alloc] initWithFileURL:filePath];
+    
+    BOOL fileExists = [fileManager fileExistsAtPath:[filePath path]];
+    
+    if (fileExists) {
+        [document openWithCompletionHandler:^(BOOL success) {
+            if (success) [self documentReady:document];
+            if (!success) NSLog(@"Could not open file");
+        }];
+    } else {
+        [document saveToURL:filePath
+           forSaveOperation:UIDocumentSaveForCreating
+          completionHandler:^(BOOL success) {
+              if (success) [self documentReady:document];
+              if (!success) NSLog(@"Could not save file");
+              
+          }];
+    }
+}
+
+-(void)documentReady:(UIManagedDocument*) document {
+    if (document.documentState == UIDocumentStateNormal) {
+        self.context = document.managedObjectContext;
+    }
 }
 
 #pragma mark Sorting

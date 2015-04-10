@@ -7,8 +7,7 @@
 //
 
 #import "TweetsTableViewController.h"
-#import "JLITweet.h"
-#import "UIColorExtentions.h"
+#import "UIColor+Extentions.h"
 #import "TweetCell.h"
 #import "GroupHeaderCell.h"
 
@@ -30,20 +29,21 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 -(void)timelineFetched {
     [self sortByTime];
+    // TODO - get data from Core Data.
     [self.tableView reloadData];
 }
 
 -(void)sortByTime {
-    
-    NSMutableArray *orderedTweetGroups = [[NSMutableArray alloc] init];
-    for (NSString *key in self.tweetManager.tweetsByAuthor) {
-        JLITweet *tweet = [self.tweetManager.tweetsByAuthor[key] lastObject];
-
-        [orderedTweetGroups addObject:tweet];
-    }
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateTime" ascending:NO];
-    [orderedTweetGroups sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    self.tweetGroups = orderedTweetGroups;
+    // Instead of sorting - fetch from Core Data sorted.
+//    NSMutableArray *orderedTweetGroups = [[NSMutableArray alloc] init];
+//    for (NSString *key in self.tweetManager.tweetsByAuthor) {
+//        JLITweet *tweet = [self.tweetManager.tweetsByAuthor[key] lastObject];
+//
+//        [orderedTweetGroups addObject:tweet];
+//    }
+//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateTime" ascending:NO];
+//    [orderedTweetGroups sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+//    self.tweetGroups = orderedTweetGroups;
 }
 
 #pragma mark onLoad

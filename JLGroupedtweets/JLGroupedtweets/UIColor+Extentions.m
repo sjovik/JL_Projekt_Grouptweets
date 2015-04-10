@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Johannes. All rights reserved.
 //
 
-#import "UIColorExtentions.h"
+#import "UIColor+Extentions.h"
 
 @implementation UIColor(UIColorExtentions)
 

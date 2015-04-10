@@ -2,19 +2,20 @@
 //  JLITweet.h
 //  JLGroupedtweets
 //
-//  Created by Johannes on 2015-03-31.
+//  Created by Johannes on 2015-04-10.
 //  Copyright (c) 2015 Johannes. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
-@interface JLITweet : NSObject
+@class JLITweetAuthor;
 
-@property (nonatomic, readonly) NSString *text;
-@property (nonatomic, readonly) NSString *author;
-@property (nonatomic, readonly) NSDate *dateTime;
-@property (nonatomic) NSString *colorString;
+@interface JLITweet : NSManagedObject
 
--(instancetype)initWithAuthor:(NSString *)author text:(NSString *)text date:(NSString *)date;
+@property (nonatomic, retain) NSString * text;
+@property (nonatomic, retain) NSDate * date;
+@property (nonatomic, retain) NSString * imgUrl;
+@property (nonatomic, retain) JLITweetAuthor *author;
 
 @end
