@@ -7,6 +7,7 @@
 //
 
 #import "JLITweetAuthor.h"
+#import "JLITweet.h"
 
 
 @implementation JLITweetAuthor
@@ -14,6 +15,7 @@
 @dynamic name;
 @dynamic color;
 @dynamic logoUrl;
+@dynamic id;
 @dynamic tweets;
 
 @end

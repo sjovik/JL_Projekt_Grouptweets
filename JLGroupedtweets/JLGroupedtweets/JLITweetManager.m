@@ -13,9 +13,13 @@
 #import "Twitter/Twitter.h"
 
 #import "JLITweet.h"
+#import "JLIHelperMethods.h"
+#import "JLITweetAuthor+Methods.h"
+
 @interface JLITweetManager()
 @property (nonatomic) NSMutableArray *downloadedTweets;
-@property (nonatomic) NSManagedObjectContext *context;
+@property (nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic) NSArray *twitterData;
 @end
 
 
@@ -71,22 +75,58 @@
 
 -(void)documentReady:(UIManagedDocument*) document {
     if (document.documentState == UIDocumentStateNormal) {
-        self.context = document.managedObjectContext;
+        self.managedObjectContext = document.managedObjectContext;
+        [self writeCoreData];
     }
 }
 
-#pragma mark Sorting
--(void)sortTweetsByAuthor {
-    for (JLITweet *tweet in self.downloadedTweets) {
-        NSArray *authorTweets;
-        if (self.tweetsByAuthor[tweet.author]) {
-            authorTweets = [self.tweetsByAuthor[tweet.author] arrayByAddingObject:tweet];
-        } else {
-            authorTweets = @[tweet];
-        }
-        [self.tweetsByAuthor setObject:authorTweets forKey:tweet.author];
+
+-(void)updateCoreData {
+    if (!self.managedObjectContext) {
+        [self openManagedDocument];
+    } else {
+        [self writeCoreData];
     }
 }
+
+-(void)writeCoreData {
+    
+    for (NSDictionary *tweetData in self.twitterData) {
+        
+        JLITweet *tweet = [NSEntityDescription insertNewObjectForEntityForName:@"Tweet"
+                                                               inManagedObjectContext:self.managedObjectContext];
+        tweet.id = tweetData[@"id_str"];
+        tweet.text = tweetData[@"text"];
+        tweet.date = [JLIHelperMethods formatTwitterDateFromString:tweetData[@"created_at"]];
+        tweet.author = [JLITweetAuthor authorFromTweet:tweetData[@"user"] inManObjContext:self.managedObjectContext];
+        
+//        JLITweet *tweet = [[JLITweet alloc] initWithAuthor:tweetData[@"user"][@"name"]
+//                                                      text:tweetData[@"text"]
+//                                                      date:tweetData[@"created_at"]];
+//        tweet.colorString = tweetData[@"user"][@"profile_background_color"];
+//        // NSLog(@"%@: %@", tweet.author, tweetData[@"user"][@"profile_background_color"]);
+//        [self.downloadedTweets insertObject:tweet atIndex:0];
+    }
+    
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.delegate timelineFetched];
+    });
+}
+
+//#pragma mark Sorting
+//-(void)sortTweetsByAuthor {
+//    for (JLITweet *tweet in self.downloadedTweets) {
+//        NSArray *authorTweets;
+//        if (self.tweetsByAuthor[tweet.author]) {
+//            authorTweets = [self.tweetsByAuthor[tweet.author] arrayByAddingObject:tweet];
+//        } else {
+//            authorTweets = @[tweet];
+//        }
+//        [self.tweetsByAuthor setObject:authorTweets forKey:tweet.author];
+//    }
+//}
 
 #pragma mark TwitterAPI connections
 -(void)fetchTimeline {
@@ -140,21 +180,12 @@
                                                                   return;
                                                               }
                                                               
-                                                              for (NSDictionary *tweetData in tweetsData) {
-                                                                  
-                                                                  JLITweet *tweet = [[JLITweet alloc] initWithAuthor:tweetData[@"user"][@"name"]
-                                                                                                                text:tweetData[@"text"]
-                                                                                                                date:tweetData[@"created_at"]];
-                                                                  tweet.colorString = tweetData[@"user"][@"profile_background_color"];
-                                                                  // NSLog(@"%@: %@", tweet.author, tweetData[@"user"][@"profile_background_color"]);
-                                                                  [self.downloadedTweets insertObject:tweet atIndex:0];
-                                                              }
+                                                              self.twitterData = tweetsData;
+                                                              NSLog(@"Timeline fetched");
                                                               
-                                                              [self sortTweetsByAuthor];
-                                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                                  NSLog(@"Timeline fetched");
-                                                                  [self.delegate timelineFetched];
-                                                              });
+                                                              // [self sortTweetsByAuthor];
+                                                              [self updateCoreData];
+                                                              
                                                           }
                                                       }];
                                                   }

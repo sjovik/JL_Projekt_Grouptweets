@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSDate * date;
 @property (nonatomic, retain) NSString * imgUrl;
+@property (nonatomic, retain) NSString * id;
 @property (nonatomic, retain) JLITweetAuthor *author;
 
 @end

@@ -15,6 +15,7 @@
 @dynamic text;
 @dynamic date;
 @dynamic imgUrl;
+@dynamic id;
 @dynamic author;
 
 @end

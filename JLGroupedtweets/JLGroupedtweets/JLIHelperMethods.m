@@ -10,7 +10,13 @@
 
 @implementation JLIHelperMethods
 
--(NSDate *)formatTwitterDateFromString:(NSString *)date {
+- (id)init
+{
+    //Don't allow init to initialize any memory state
+    return nil;
+}
+
++(NSDate *)formatTwitterDateFromString:(NSString *)date {
     
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];

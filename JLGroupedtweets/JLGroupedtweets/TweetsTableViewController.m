@@ -7,9 +7,12 @@
 //
 
 #import "TweetsTableViewController.h"
-#import "UIColor+Extentions.h"
 #import "TweetCell.h"
 #import "GroupHeaderCell.h"
+
+#import "JLITweetAuthor.h"
+#import "JLITweet.h"
+#import "UIColor+Extentions.h"
 
 
 static NSInteger const NO_EXPANDED_SECTION = -1;
@@ -29,8 +32,12 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 -(void)timelineFetched {
     [self sortByTime];
-    // TODO - get data from Core Data.
+    [self getData];
     [self.tableView reloadData];
+}
+
+-(void)getData {
+    
 }
 
 -(void)sortByTime {
@@ -163,10 +170,10 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
                                           forIndexPath:indexPath];
         tweet = [tweetsByAuthor lastObject];
         
-        if (tweet.colorString) {
-            cell.backgroundColor = [UIColor colorwithHexString:tweet.colorString];
+        if (tweet.author.color) {
+            cell.backgroundColor = [UIColor colorwithHexString:tweet.author.color];
         }
-        cell.groupNameLabel.text = tweet.author;
+        cell.groupNameLabel.text = tweet.author.name;
         return cell;
         
     } else if (indexPath.row == 5) { // last row - get more tweets.
@@ -185,8 +192,8 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         // cell.titleLabel.text = tweet.author;
         cell.bodyLabel.text = tweet.text;
         
-        if (tweet.colorString) {
-            cell.authorColorView.backgroundColor = [UIColor colorwithHexString:tweet.colorString];
+        if (tweet.author.color) {
+            cell.authorColorView.backgroundColor = [UIColor colorwithHexString:tweet.author.color];
         }
         return cell;
     }

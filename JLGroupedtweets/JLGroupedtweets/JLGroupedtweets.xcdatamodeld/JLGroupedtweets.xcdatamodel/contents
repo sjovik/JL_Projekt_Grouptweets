@@ -2,18 +2,20 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14B25" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="JLITweet" representedClassName="JLITweet" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imgUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="author" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="JLITweetAuthor" inverseName="tweets" inverseEntity="JLITweetAuthor" syncable="YES"/>
     </entity>
     <entity name="JLITweetAuthor" representedClassName="JLITweetAuthor" syncable="YES">
         <attribute name="color" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="logoUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="JLITweet" inverseName="author" inverseEntity="JLITweet" syncable="YES"/>
     </entity>
     <elements>
-        <element name="JLITweet" positionX="313" positionY="95" width="128" height="103"/>
-        <element name="JLITweetAuthor" positionX="115" positionY="2" width="128" height="103"/>
+        <element name="JLITweet" positionX="331" positionY="104" width="128" height="118"/>
+        <element name="JLITweetAuthor" positionX="106" positionY="2" width="128" height="118"/>
     </elements>
 </model>

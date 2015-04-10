@@ -9,19 +9,21 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class JLITweet;
 
 @interface JLITweetAuthor : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * color;
 @property (nonatomic, retain) NSString * logoUrl;
+@property (nonatomic, retain) NSString * id;
 @property (nonatomic, retain) NSSet *tweets;
 @end
 
 @interface JLITweetAuthor (CoreDataGeneratedAccessors)
 
-- (void)addTweetsObject:(NSManagedObject *)value;
-- (void)removeTweetsObject:(NSManagedObject *)value;
+- (void)addTweetsObject:(JLITweet *)value;
+- (void)removeTweetsObject:(JLITweet *)value;
 - (void)addTweets:(NSSet *)values;
 - (void)removeTweets:(NSSet *)values;
 

@@ -11,6 +11,6 @@
 
 @interface JLIHelperMethods : NSObject
 
--(NSDate *)formatTwitterDateFromString:(NSString *)date;
++(NSDate *)formatTwitterDateFromString:(NSString *)date;
 
 @end
