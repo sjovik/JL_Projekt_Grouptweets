@@ -13,9 +13,8 @@
 +(JLITweetAuthor *)authorFromTweet:(NSDictionary *)tweetData inManObjContext:(NSManagedObjectContext *)context {
     
     JLITweetAuthor *author = nil;
-    NSDictionary *authorJson = tweetData[@"user"];
     
-    NSString *authorId = authorJson[@"id_str"];
+    NSString *authorId = tweetData[@"id_str"];
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"JLITweetAuthor"];
     request.predicate = [NSPredicate predicateWithFormat:@"id = %@", authorId];
     
@@ -27,13 +26,13 @@
     } else if ([match count]) {
         author = [match firstObject];
     } else {
-        author = [NSEntityDescription insertNewObjectForEntityForName:@"JLITweerAuthor"
+        author = [NSEntityDescription insertNewObjectForEntityForName:@"JLITweetAuthor"
                                                inManagedObjectContext:context];
         
         author.id = authorId;
-        author.name = authorJson[@"screen_name"];
-        author.logoUrl = authorJson[@"profile_image_url_https"];
-        author.color = authorJson[@"profile_background_color"];
+        author.name = tweetData[@"name"];
+        author.logoUrl = tweetData[@"profile_image_url_https"];
+        author.color = tweetData[@"profile_background_color"];
     }
     
     return author;

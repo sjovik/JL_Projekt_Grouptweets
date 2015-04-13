@@ -17,7 +17,7 @@
 #import "JLITweetAuthor+Methods.h"
 
 @interface JLITweetManager()
-@property (nonatomic) NSMutableArray *downloadedTweets;
+
 @property (nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) NSArray *twitterData;
 @end
@@ -26,24 +26,8 @@
 @implementation JLITweetManager
 
 
-#pragma mark Property getters
--(NSArray *)downloadedTweets {
-    if (!_downloadedTweets) {
-        _downloadedTweets = [[NSMutableArray alloc] init];
-    }
-    return _downloadedTweets;
-}
-
--(NSMutableDictionary *)tweetsByAuthor {
-    if (!_tweetsByAuthor) {
-        _tweetsByAuthor = [[NSMutableDictionary alloc] init];
-    }
-    
-    return _tweetsByAuthor;
-}
-
-
 #pragma mark CoreData
+
 
 -(void)openManagedDocument {
     
@@ -59,16 +43,17 @@
     
     if (fileExists) {
         [document openWithCompletionHandler:^(BOOL success) {
-            if (success) [self documentReady:document];
-            if (!success) NSLog(@"Could not open file");
+            if (success) {
+                [self documentReady:document];
+            } else NSLog(@"Could not open file");
         }];
     } else {
         [document saveToURL:filePath
            forSaveOperation:UIDocumentSaveForCreating
           completionHandler:^(BOOL success) {
-              if (success) [self documentReady:document];
-              if (!success) NSLog(@"Could not save file");
-              
+              if (success) {
+                  [self documentReady:document];
+              } else NSLog(@"Could not save file");
           }];
     }
 }
@@ -76,16 +61,7 @@
 -(void)documentReady:(UIManagedDocument*) document {
     if (document.documentState == UIDocumentStateNormal) {
         self.managedObjectContext = document.managedObjectContext;
-        [self writeCoreData];
-    }
-}
-
-
--(void)updateCoreData {
-    if (!self.managedObjectContext) {
-        [self openManagedDocument];
-    } else {
-        [self writeCoreData];
+        [self.delegate managedObjectContextReady];
     }
 }
 
@@ -93,8 +69,8 @@
     
     for (NSDictionary *tweetData in self.twitterData) {
         
-        JLITweet *tweet = [NSEntityDescription insertNewObjectForEntityForName:@"Tweet"
-                                                               inManagedObjectContext:self.managedObjectContext];
+        JLITweet *tweet = [NSEntityDescription insertNewObjectForEntityForName:@"JLITweet"
+                                                        inManagedObjectContext:self.managedObjectContext];
         tweet.id = tweetData[@"id_str"];
         tweet.text = tweetData[@"text"];
         tweet.date = [JLIHelperMethods formatTwitterDateFromString:tweetData[@"created_at"]];
@@ -107,26 +83,31 @@
 //        // NSLog(@"%@: %@", tweet.author, tweetData[@"user"][@"profile_background_color"]);
 //        [self.downloadedTweets insertObject:tweet atIndex:0];
     }
-    
-    
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self.delegate timelineFetched];
-    });
 }
 
-//#pragma mark Sorting
-//-(void)sortTweetsByAuthor {
-//    for (JLITweet *tweet in self.downloadedTweets) {
-//        NSArray *authorTweets;
-//        if (self.tweetsByAuthor[tweet.author]) {
-//            authorTweets = [self.tweetsByAuthor[tweet.author] arrayByAddingObject:tweet];
-//        } else {
-//            authorTweets = @[tweet];
-//        }
-//        [self.tweetsByAuthor setObject:authorTweets forKey:tweet.author];
-//    }
-//}
+-(NSDictionary *)timelineFromCoreData {
+    
+    NSMutableDictionary *timeline = [[NSMutableDictionary alloc] init];
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"JLITweetAuthor"];
+    
+    NSError *error;
+    NSArray *authors = [self.managedObjectContext executeFetchRequest:request error:&error];
+    
+    if(!authors || error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+    } else {
+        for (JLITweetAuthor* author in authors) {
+            NSLog(@"%@", author);
+            [timeline setValue:[author.tweets allObjects] forKey:author.name];
+        }
+        NSLog(@"%@", timeline);
+    }
+
+    
+    
+    return timeline;
+}
 
 #pragma mark TwitterAPI connections
 -(void)fetchTimeline {
@@ -183,8 +164,11 @@
                                                               self.twitterData = tweetsData;
                                                               NSLog(@"Timeline fetched");
                                                               
-                                                              // [self sortTweetsByAuthor];
-                                                              [self updateCoreData];
+                                                              [self writeCoreData];
+                                                              
+                                                              dispatch_async(dispatch_get_main_queue(), ^{
+                                                                  [self.delegate timelineFetched:[self timelineFromCoreData]];
+                                                              });
                                                               
                                                           }
                                                       }];

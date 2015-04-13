@@ -19,6 +19,7 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 @interface TweetsTableViewController ()
 
+@property (nonatomic) NSDictionary *timeline;
 @property (nonatomic) JLITweetManager *tweetManager;
 @property (nonatomic) NSArray *tweetGroups;
 @property (nonatomic) NSInteger expandedSection;
@@ -30,27 +31,23 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 #pragma mark tweetManager callbacks
 
--(void)timelineFetched {
+-(void)timelineFetched:(NSDictionary *)timeline {
+    self.timeline = timeline;
     [self sortByTime];
-    [self getData];
     [self.tableView reloadData];
 }
 
--(void)getData {
-    
-}
-
 -(void)sortByTime {
-    // Instead of sorting - fetch from Core Data sorted.
-//    NSMutableArray *orderedTweetGroups = [[NSMutableArray alloc] init];
-//    for (NSString *key in self.tweetManager.tweetsByAuthor) {
-//        JLITweet *tweet = [self.tweetManager.tweetsByAuthor[key] lastObject];
-//
-//        [orderedTweetGroups addObject:tweet];
-//    }
-//    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateTime" ascending:NO];
-//    [orderedTweetGroups sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-//    self.tweetGroups = orderedTweetGroups;
+    
+    NSMutableArray *orderedTweetGroups = [[NSMutableArray alloc] init];
+    for (NSString *key in self.timeline) {
+        JLITweet *tweet = [self.timeline[key] lastObject];
+
+        [orderedTweetGroups addObject:tweet];
+    }
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
+    [orderedTweetGroups sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    self.tweetGroups = orderedTweetGroups;
 }
 
 #pragma mark onLoad
@@ -59,12 +56,16 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     
     self.tweetManager = [[JLITweetManager alloc] init];
     self.tweetManager.delegate = self;
-    [self.tweetManager fetchTimeline];
+    [self.tweetManager openManagedDocument];
     
     self.expandedSection = NO_EXPANDED_SECTION;
     
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 150;
+}
+
+-(void)managedObjectContextReady {
+    [self.tweetManager fetchTimeline];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,18 +82,18 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     
-    float authorTweetCount = ((NSArray*)self.tweetManager.tweetsByAuthor[((JLITweet*)self.tweetGroups[section]).author]).count;
-    
+    float authorTweetCount = ((NSArray*)self.timeline[((JLITweet*)self.tweetGroups[section]).author.name]).count;
+
     return (section == self.expandedSection) ?
         // +1 because header tweet repeated in expanded form
     (authorTweetCount > 5) ? 6 : authorTweetCount + 1
     : 1;
         
 }
-//
-//-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    return UITableViewAutomaticDimension;
-//}
+
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewAutomaticDimension;
+}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -160,9 +161,8 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSLog(@"%ld", (long)indexPath.row);
     JLITweet *tweet;
-    NSArray *tweetsByAuthor = self.tweetManager.tweetsByAuthor[((JLITweet *)self.tweetGroups[indexPath.section]).author];
+    NSArray *tweetsByAuthor = self.timeline[((JLITweet *)self.tweetGroups[indexPath.section]).author.name];
     
     if (!indexPath.row) { // first row - group header cell
         GroupHeaderCell *cell;

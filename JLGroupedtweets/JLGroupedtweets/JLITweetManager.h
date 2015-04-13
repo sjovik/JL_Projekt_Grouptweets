@@ -10,9 +10,13 @@
 
 @protocol JLITweetManagerDelegate <NSObject>
 
+@required
+
+-(void)managedObjectContextReady;
+
 @optional
 
--(void)timelineFetched;
+-(void)timelineFetched:(NSDictionary *)timeline;
 
 @end
 
@@ -24,5 +28,6 @@
 @property (nonatomic) NSMutableDictionary *tweetsByAuthor;
 
 -(void)fetchTimeline;
+-(void)openManagedDocument;
 
 @end
