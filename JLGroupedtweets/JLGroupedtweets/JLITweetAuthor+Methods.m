@@ -28,7 +28,6 @@
     } else {
         author = [NSEntityDescription insertNewObjectForEntityForName:@"JLITweetAuthor"
                                                inManagedObjectContext:context];
-        
         author.id = authorId;
         author.name = tweetData[@"name"];
         author.logoUrl = tweetData[@"profile_image_url_https"];

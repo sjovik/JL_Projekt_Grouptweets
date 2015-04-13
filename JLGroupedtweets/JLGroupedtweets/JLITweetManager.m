@@ -28,7 +28,6 @@
 
 #pragma mark CoreData
 
-
 -(void)openManagedDocument {
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -71,6 +70,8 @@
         
         JLITweet *tweet = [NSEntityDescription insertNewObjectForEntityForName:@"JLITweet"
                                                         inManagedObjectContext:self.managedObjectContext];
+        
+        assert(tweet);
         tweet.id = tweetData[@"id_str"];
         tweet.text = tweetData[@"text"];
         tweet.date = [JLIHelperMethods formatTwitterDateFromString:tweetData[@"created_at"]];
@@ -82,6 +83,16 @@
 //        tweet.colorString = tweetData[@"user"][@"profile_background_color"];
 //        // NSLog(@"%@: %@", tweet.author, tweetData[@"user"][@"profile_background_color"]);
 //        [self.downloadedTweets insertObject:tweet atIndex:0];
+        
+
+        NSError *error;
+
+        if(![self.managedObjectContext save:&error]) {
+            NSLog(@"Failed to save.");
+        }
+        if (error) {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
     }
 }
 
@@ -98,22 +109,38 @@
         NSLog(@"Error: %@", error.localizedDescription);
     } else {
         for (JLITweetAuthor* author in authors) {
-            NSLog(@"%@", author);
             [timeline setValue:[author.tweets allObjects] forKey:author.name];
         }
-        NSLog(@"%@", timeline);
     }
-
-    
-    
     return timeline;
+}
+
+-(NSString *)getLastTweetId {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"JLITweet"];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+    [request setSortDescriptors:@[sortDescriptor]];
+    
+    NSError *error;
+    NSArray *tweets = [self.managedObjectContext executeFetchRequest:request error:&error];
+    
+    if(!tweets || error) {
+        NSLog(@"Error: %@", error.localizedDescription);
+        return nil;
+    } else {
+        JLITweet *tweet = [tweets lastObject];
+        return tweet.id;
+    }
 }
 
 #pragma mark TwitterAPI connections
 -(void)fetchTimeline {
     
-    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    NSString *sinceId = [self getLastTweetId];
+    NSLog(@"since id: %@", sinceId);
+    // if (!sinceId) sinceId =
     
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
     
     [accountStore requestAccessToAccountsWithType:accountType options:nil
@@ -130,8 +157,16 @@
                                                       NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
                                                       NSDictionary *parameters = @{
                                                                                         @"count" : @"30",
-                                                                                        @"include_entities" : @"1"
+                                                                                        @"include_entities" : @"1",
+                                                                                        // @"since_id" : sinceId
                                                                                    };
+                                                      if (sinceId) {
+                                                          parameters = @{
+                                                            @"count" : @"30",
+                                                            @"include_entities" : @"1",
+                                                            @"since_id" : sinceId
+                                                          };
+                                                      }
                                                       SLRequest *tweetsRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
                                                                                                     requestMethod:SLRequestMethodGET
                                                                                                               URL:url
@@ -162,11 +197,11 @@
                                                               }
                                                               
                                                               self.twitterData = tweetsData;
-                                                              NSLog(@"Timeline fetched");
                                                               
-                                                              [self writeCoreData];
+                                                              NSLog(@"Timeline fetched %lu items", (unsigned long)self.twitterData.count);
                                                               
                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                  [self writeCoreData];
                                                                   [self.delegate timelineFetched:[self timelineFromCoreData]];
                                                               });
                                                               
