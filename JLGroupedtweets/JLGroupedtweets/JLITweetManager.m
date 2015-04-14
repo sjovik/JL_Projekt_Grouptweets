@@ -94,11 +94,14 @@
     NSError *error;
     NSArray *authors = [self.managedObjectContext executeFetchRequest:request error:&error];
     
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
+    // [orderedTweetGroups sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+    
     if(!authors || error) {
         if (error) NSLog(@"Error: %@", error.localizedDescription);
     } else {
         for (JLITweetAuthor* author in authors) {
-            [timeline setValue:[author.tweets allObjects] forKey:author.name];
+            [timeline setValue:[[author.tweets allObjects] sortedArrayUsingDescriptors:@[sortDescriptor]] forKey:author.name];
         }
     }
     return timeline;

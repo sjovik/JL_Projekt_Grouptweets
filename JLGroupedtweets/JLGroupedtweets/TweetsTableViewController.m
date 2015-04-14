@@ -41,7 +41,8 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     
     NSMutableArray *orderedTweetGroups = [[NSMutableArray alloc] init];
     for (NSString *key in self.timeline) {
-        JLITweet *tweet = [self.timeline[key] lastObject];
+        JLITweet *tweet = [self.timeline[key] firstObject];
+        NSLog(@"lastobject: %@, date: %@", tweet.author.name, tweet.date);
 
         [orderedTweetGroups addObject:tweet];
     }
@@ -188,7 +189,7 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         TweetCell *cell;
         cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
-        tweet = tweetsByAuthor[(tweetsByAuthor.count) - indexPath.row]; // in reversed order
+        tweet = tweetsByAuthor[indexPath.row -1];
         // cell.titleLabel.text = tweet.author;
         cell.bodyLabel.text = tweet.text;
         
