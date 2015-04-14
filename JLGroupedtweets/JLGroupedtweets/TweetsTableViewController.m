@@ -16,6 +16,8 @@
 
 
 static NSInteger const NO_EXPANDED_SECTION = -1;
+static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
+
 
 @interface TweetsTableViewController ()
 
@@ -64,7 +66,7 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     [self.tweetManager openManagedDocument];
     
     self.openSection = NO_EXPANDED_SECTION;
-    self.rowsToShowAtOpenSection = 7;
+    self.rowsToShowAtOpenSection = DEFAULT_ROWS_TO_SHOW;
     
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 100;
@@ -121,10 +123,12 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
                 numberOfRowsToClose = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
                 sectionToClose = clickedSection;
                 self.openSection = NO_EXPANDED_SECTION;
+                self.rowsToShowAtOpenSection = DEFAULT_ROWS_TO_SHOW;
             } else {
                 numberOfRowsToClose = [self tableView:self.tableView numberOfRowsInSection:self.openSection];
                 sectionToClose = self.openSection;
                 self.openSection = clickedSection;
+                self.rowsToShowAtOpenSection = DEFAULT_ROWS_TO_SHOW;
                 numberOfRowsToOpen = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
             }
         } else {
@@ -145,8 +149,25 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         }
         [self.tableView endUpdates];
         
-    } else if (indexPath.row == self.rowsToShowAtOpenSection){
-        // TODO - gert more tweets
+    } else if (indexPath.row == self.rowsToShowAtOpenSection){ // expand more
+        
+        self.rowsToShowAtOpenSection += 5;
+        long numberOfRowsToOpen = [self tableView:self.tableView numberOfRowsInSection:indexPath.section];
+        
+        NSMutableArray *rowsToOpen = [NSMutableArray array];
+        for (long i = indexPath.row; i < numberOfRowsToOpen; i++)
+        {
+            NSIndexPath *row = [NSIndexPath indexPathForRow:i
+                                                  inSection:indexPath.section];
+            [rowsToOpen addObject:row];
+        }
+        [self.tableView beginUpdates];
+        [tableView insertRowsAtIndexPaths:rowsToOpen
+            withRowAnimation:UITableViewRowAnimationTop];
+        [tableView deleteRowsAtIndexPaths:@[indexPath]
+                         withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView endUpdates];
+        
         NSLog(@"%@", @"hämtar fler tweets...");
     } else {
         // TODO - länka till fullstorlek tweet.
@@ -162,7 +183,6 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
                                               inSection:section];
         [rowsToToggle addObject:row];
     }
-    
     return rowsToToggle;
 }
 
