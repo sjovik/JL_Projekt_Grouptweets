@@ -198,7 +198,7 @@
                                                               
                                                               dispatch_async(dispatch_get_main_queue(), ^{
                                                                   [self writeCoreData];
-                                                                  [self.delegate timelineFetched:[self timelineFromCoreData]];
+                                                                  [self.delegate timelineFetched:[self timelineFromCoreData] sinceId:sinceId];
                                                               });
                                                               
                                                           }

@@ -20,13 +20,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="groupNameLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBR-td-Sd6">
-                                            <rect key="frame" x="8" y="24" width="576" height="52"/>
+                                            <rect key="frame" x="8" y="24" width="561" height="52"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgA-QQ-rWx">
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgA-QQ-rWx" userLabel="badgeLabel">
+                                            <rect key="frame" x="577" y="42" width="15" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -41,6 +42,7 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.76257159699999999" green="0.86933791039999997" blue="0.80924879400000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
+                                    <outlet property="badgeLabel" destination="sgA-QQ-rWx" id="M4r-FA-Oo6"/>
                                     <outlet property="groupNameLabel" destination="aBR-td-Sd6" id="52d-9O-lZc"/>
                                 </connections>
                             </tableViewCell>

@@ -16,7 +16,7 @@
 
 @optional
 
--(void)timelineFetched:(NSDictionary *)timeline;
+-(void)timelineFetched:(NSDictionary *)timeline sinceId:(NSString *)sinceId;
 
 @end
 

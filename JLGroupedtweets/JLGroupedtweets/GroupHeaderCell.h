@@ -10,5 +10,6 @@
 
 @interface GroupHeaderCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *groupNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *badgeLabel;
 
 @end

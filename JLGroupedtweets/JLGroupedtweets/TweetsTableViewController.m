@@ -23,6 +23,7 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 @property (nonatomic) JLITweetManager *tweetManager;
 @property (nonatomic) NSArray *tweetGroups;
 @property (nonatomic) NSInteger expandedSection;
+@property (nonatomic) NSString *sinceId;
 
 @end
 
@@ -31,8 +32,9 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 #pragma mark tweetManager callbacks
 
--(void)timelineFetched:(NSDictionary *)timeline {
+-(void)timelineFetched:(NSDictionary *)timeline sinceId:(NSString *)sinceId {
     self.timeline = timeline;
+    self.sinceId = sinceId;
     [self sortByTime];
     [self.tableView reloadData];
 }
@@ -42,11 +44,9 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     NSMutableArray *orderedTweetGroups = [[NSMutableArray alloc] init];
     for (NSString *key in self.timeline) {
         JLITweet *tweet = [self.timeline[key] firstObject];
-        NSLog(@"lastobject: %@, date: %@", tweet.author.name, tweet.date);
-
         [orderedTweetGroups addObject:tweet];
     }
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"id" ascending:NO];
     [orderedTweetGroups sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     self.tweetGroups = orderedTweetGroups;
 }
@@ -87,9 +87,8 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
     return (section == self.expandedSection) ?
         // +1 because header tweet repeated in expanded form
-    (authorTweetCount > 5) ? 6 : authorTweetCount + 1
+    (authorTweetCount > 8) ? 9 : authorTweetCount + 1
     : 1;
-        
 }
 
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -139,7 +138,7 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         }
         [self.tableView endUpdates];
         
-    } else if (indexPath.row == 5){
+    } else if (indexPath.row == 8){
         // TODO - gert more tweets
         NSLog(@"%@", @"hämtar fler tweets...");
     } else {
@@ -160,6 +159,20 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     return rowsToToggle;
 }
 
+- (NSString *)sinceLastUpdateInTweets:(NSArray *)tweets {
+    
+    int counter = 0;
+    
+    for (JLITweet *tweet in tweets) {
+        if (tweet.id > self.sinceId) {
+            counter++;
+        }
+    }
+    
+    
+    return [NSString stringWithFormat:@"%d", counter];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     JLITweet *tweet;
@@ -169,15 +182,20 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         GroupHeaderCell *cell;
         cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup"
                                           forIndexPath:indexPath];
-        tweet = [tweetsByAuthor lastObject];
+        tweet = [tweetsByAuthor firstObject];
         
         if (tweet.author.color) {
             cell.backgroundColor = [UIColor colorwithHexString:tweet.author.color];
         }
         cell.groupNameLabel.text = tweet.author.name;
+        NSString *badgeNumber = [self sinceLastUpdateInTweets:tweetsByAuthor];
+        if (![badgeNumber isEqual: @"0"]) {
+            cell.badgeLabel.hidden = NO;
+            cell.badgeLabel.text = badgeNumber;
+        } else cell.badgeLabel.hidden = YES;
         return cell;
         
-    } else if (indexPath.row == 5) { // last row - get more tweets.
+    } else if (indexPath.row == 8) { // last row - get more tweets.
         TweetCell *cell;
         cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
@@ -198,7 +216,6 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         }
         return cell;
     }
-    
 }
 
 @end
