@@ -22,7 +22,7 @@
     NSArray *match = [context executeFetchRequest:request error:&error];
     
     if(!match || error) {
-        NSLog(@"Error: %@", error.localizedDescription);
+        if (error) NSLog(@"Error: %@", error.localizedDescription);
     } else if ([match count]) {
         author = [match firstObject];
     } else {

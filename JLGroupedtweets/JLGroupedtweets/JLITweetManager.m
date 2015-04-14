@@ -70,23 +70,12 @@
         
         JLITweet *tweet = [NSEntityDescription insertNewObjectForEntityForName:@"JLITweet"
                                                         inManagedObjectContext:self.managedObjectContext];
-        
-        assert(tweet);
         tweet.id = tweetData[@"id_str"];
         tweet.text = tweetData[@"text"];
         tweet.date = [JLIHelperMethods formatTwitterDateFromString:tweetData[@"created_at"]];
         tweet.author = [JLITweetAuthor authorFromTweet:tweetData[@"user"] inManObjContext:self.managedObjectContext];
-        
-//        JLITweet *tweet = [[JLITweet alloc] initWithAuthor:tweetData[@"user"][@"name"]
-//                                                      text:tweetData[@"text"]
-//                                                      date:tweetData[@"created_at"]];
-//        tweet.colorString = tweetData[@"user"][@"profile_background_color"];
-//        // NSLog(@"%@: %@", tweet.author, tweetData[@"user"][@"profile_background_color"]);
-//        [self.downloadedTweets insertObject:tweet atIndex:0];
-        
 
         NSError *error;
-
         if(![self.managedObjectContext save:&error]) {
             NSLog(@"Failed to save.");
         }
@@ -106,7 +95,7 @@
     NSArray *authors = [self.managedObjectContext executeFetchRequest:request error:&error];
     
     if(!authors || error) {
-        NSLog(@"Error: %@", error.localizedDescription);
+        if (error) NSLog(@"Error: %@", error.localizedDescription);
     } else {
         for (JLITweetAuthor* author in authors) {
             [timeline setValue:[author.tweets allObjects] forKey:author.name];
@@ -118,8 +107,9 @@
 -(NSString *)getLastTweetId {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"JLITweet"];
     
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
     [request setSortDescriptors:@[sortDescriptor]];
+    request.fetchLimit = 1;
     
     NSError *error;
     NSArray *tweets = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -133,12 +123,16 @@
     }
 }
 
+-(void)deleteOldTweets {
+    
+}
+
 #pragma mark TwitterAPI connections
 -(void)fetchTimeline {
     
+    // TODO - [self deleteOldTweets]
     NSString *sinceId = [self getLastTweetId];
     NSLog(@"since id: %@", sinceId);
-    // if (!sinceId) sinceId =
     
     ACAccountStore *accountStore = [[ACAccountStore alloc] init];
     ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
@@ -157,8 +151,7 @@
                                                       NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
                                                       NSDictionary *parameters = @{
                                                                                         @"count" : @"30",
-                                                                                        @"include_entities" : @"1",
-                                                                                        // @"since_id" : sinceId
+                                                                                        @"include_entities" : @"1"
                                                                                    };
                                                       if (sinceId) {
                                                           parameters = @{

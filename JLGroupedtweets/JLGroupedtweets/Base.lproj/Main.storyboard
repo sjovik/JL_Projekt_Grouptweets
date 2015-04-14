@@ -19,18 +19,25 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zMU-C1-yyO" id="gZY-OZ-BmL">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="groupNameLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBR-td-Sd6">
-                                            <rect key="frame" x="8" y="24" width="584" height="52"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="groupNameLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBR-td-Sd6">
+                                            <rect key="frame" x="8" y="24" width="532" height="52"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="badge" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgA-QQ-rWx">
+                                            <rect key="frame" x="548" y="41" width="44" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="sgA-QQ-rWx" firstAttribute="centerY" secondItem="aBR-td-Sd6" secondAttribute="centerY" constant="-0.5" id="DKo-c5-Fdd"/>
                                         <constraint firstItem="aBR-td-Sd6" firstAttribute="top" secondItem="gZY-OZ-BmL" secondAttribute="topMargin" constant="16" id="FSE-Ej-ciw"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="aBR-td-Sd6" secondAttribute="bottom" constant="16" id="RHH-dk-SA7"/>
-                                        <constraint firstItem="aBR-td-Sd6" firstAttribute="trailing" secondItem="gZY-OZ-BmL" secondAttribute="trailingMargin" id="Z0F-kk-0JL"/>
+                                        <constraint firstItem="sgA-QQ-rWx" firstAttribute="leading" secondItem="aBR-td-Sd6" secondAttribute="trailing" constant="8" id="qOA-96-Dj1"/>
                                         <constraint firstItem="aBR-td-Sd6" firstAttribute="leading" secondItem="gZY-OZ-BmL" secondAttribute="leadingMargin" id="r6g-EK-XKG"/>
+                                        <constraint firstItem="sgA-QQ-rWx" firstAttribute="trailing" secondItem="gZY-OZ-BmL" secondAttribute="trailingMargin" id="sC9-Ya-JCr"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.76257159699999999" green="0.86933791039999997" blue="0.80924879400000005" alpha="1" colorSpace="calibratedRGB"/>
