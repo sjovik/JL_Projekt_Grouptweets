@@ -11,5 +11,6 @@
 @interface UIColor(UIColorExtentions)
 
 +(UIColor *)colorwithHexString:(NSString *)hexValue;
++(UIColor *)contrastingColor:(UIColor *)color;
 
 @end

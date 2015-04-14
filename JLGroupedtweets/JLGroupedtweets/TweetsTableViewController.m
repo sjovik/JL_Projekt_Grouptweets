@@ -164,7 +164,7 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     int counter = 0;
     
     for (JLITweet *tweet in tweets) {
-        if (tweet.id > self.sinceId) {
+        if ([tweet.id floatValue] > [self.sinceId floatValue]) {
             counter++;
         }
     }
@@ -184,14 +184,15 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
                                           forIndexPath:indexPath];
         tweet = [tweetsByAuthor firstObject];
         
-        if (tweet.author.color) {
-            cell.backgroundColor = [UIColor colorwithHexString:tweet.author.color];
-        }
+        cell.backgroundColor = [UIColor colorwithHexString:tweet.author.color];
+        cell.groupNameLabel.textColor = [UIColor contrastingColor:cell.backgroundColor];
         cell.groupNameLabel.text = tweet.author.name;
+        
         NSString *badgeNumber = [self sinceLastUpdateInTweets:tweetsByAuthor];
         if (![badgeNumber isEqual: @"0"]) {
             cell.badgeLabel.hidden = NO;
             cell.badgeLabel.text = badgeNumber;
+            cell.badgeLabel.textColor = cell.groupNameLabel.textColor;
         } else cell.badgeLabel.hidden = YES;
         return cell;
         
@@ -208,12 +209,8 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
         tweet = tweetsByAuthor[indexPath.row -1];
-        // cell.titleLabel.text = tweet.author;
         cell.bodyLabel.text = tweet.text;
-        
-        if (tweet.author.color) {
-            cell.authorColorView.backgroundColor = [UIColor colorwithHexString:tweet.author.color];
-        }
+        cell.authorColorView.backgroundColor = [UIColor colorwithHexString:tweet.author.color];
         return cell;
     }
 }

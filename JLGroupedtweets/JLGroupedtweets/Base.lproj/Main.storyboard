@@ -52,20 +52,20 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="bodyLabel" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bq-ZD-vt4">
-                                            <rect key="frame" x="20" y="24" width="572" height="82"/>
+                                            <rect key="frame" x="18" y="24" width="574" height="82"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fVj-AP-7ZV" userLabel="authorColorView">
-                                            <rect key="frame" x="0.0" y="0.0" width="4" height="130"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="2" height="130"/>
                                             <color key="backgroundColor" red="0.76257159699999999" green="0.86933791039999997" blue="0.80924879400000005" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="4" id="6kq-HR-Lhh"/>
+                                                <constraint firstAttribute="width" constant="2" id="6kq-HR-Lhh"/>
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SNH-iD-ehf" userLabel="DividerView">
-                                            <rect key="frame" x="4" y="129" width="596" height="1"/>
+                                            <rect key="frame" x="2" y="129" width="598" height="1"/>
                                             <color key="backgroundColor" red="0.88869160353535359" green="0.88869160353535359" blue="0.88869160353535359" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="Ey1-Tt-OMQ"/>
