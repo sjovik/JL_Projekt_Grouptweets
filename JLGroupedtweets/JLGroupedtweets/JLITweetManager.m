@@ -153,13 +153,13 @@
                                                       }
                                                       NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
                                                       NSDictionary *parameters = @{
-                                                                                        @"count" : @"30",
-                                                                                        @"include_entities" : @"1"
+                                                                                        @"count" : @"100",
+                                                                                        @"include_entities" : @"0"
                                                                                    };
                                                       if (sinceId) {
                                                           parameters = @{
-                                                            @"count" : @"30",
-                                                            @"include_entities" : @"1",
+                                                            @"count" : @"100",
+                                                            @"include_entities" : @"0",
                                                             @"since_id" : sinceId
                                                           };
                                                       }

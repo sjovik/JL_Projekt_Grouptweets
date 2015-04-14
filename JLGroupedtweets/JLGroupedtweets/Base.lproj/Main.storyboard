@@ -20,7 +20,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="groupNameLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBR-td-Sd6">
-                                            <rect key="frame" x="8" y="24" width="561" height="52"/>
+                                            <rect key="frame" x="16" y="20" width="553" height="60"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -33,10 +33,10 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="sgA-QQ-rWx" firstAttribute="centerY" secondItem="aBR-td-Sd6" secondAttribute="centerY" constant="-0.5" id="DKo-c5-Fdd"/>
-                                        <constraint firstItem="aBR-td-Sd6" firstAttribute="top" secondItem="gZY-OZ-BmL" secondAttribute="topMargin" constant="16" id="FSE-Ej-ciw"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="aBR-td-Sd6" secondAttribute="bottom" constant="16" id="RHH-dk-SA7"/>
+                                        <constraint firstItem="aBR-td-Sd6" firstAttribute="top" secondItem="gZY-OZ-BmL" secondAttribute="top" constant="20" id="FSE-Ej-ciw"/>
+                                        <constraint firstAttribute="bottom" secondItem="aBR-td-Sd6" secondAttribute="bottom" constant="20" id="RHH-dk-SA7"/>
                                         <constraint firstItem="sgA-QQ-rWx" firstAttribute="leading" secondItem="aBR-td-Sd6" secondAttribute="trailing" constant="8" id="qOA-96-Dj1"/>
-                                        <constraint firstItem="aBR-td-Sd6" firstAttribute="leading" secondItem="gZY-OZ-BmL" secondAttribute="leadingMargin" id="r6g-EK-XKG"/>
+                                        <constraint firstItem="aBR-td-Sd6" firstAttribute="leading" secondItem="gZY-OZ-BmL" secondAttribute="leading" constant="16" id="r6g-EK-XKG"/>
                                         <constraint firstItem="sgA-QQ-rWx" firstAttribute="trailing" secondItem="gZY-OZ-BmL" secondAttribute="trailingMargin" id="sC9-Ya-JCr"/>
                                     </constraints>
                                 </tableViewCellContentView>

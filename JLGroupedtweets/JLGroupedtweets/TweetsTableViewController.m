@@ -19,11 +19,15 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
 
 @interface TweetsTableViewController ()
 
-@property (nonatomic) NSDictionary *timeline;
 @property (nonatomic) JLITweetManager *tweetManager;
-@property (nonatomic) NSArray *tweetGroups;
-@property (nonatomic) NSInteger expandedSection;
+
+@property (nonatomic) NSDictionary *timeline;
 @property (nonatomic) NSString *sinceId;
+
+@property (nonatomic) NSArray *tweetGroups;
+@property (nonatomic) NSInteger openSection;
+@property (nonatomic) int rowsToShowAtOpenSection;
+
 
 @end
 
@@ -59,10 +63,11 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     self.tweetManager.delegate = self;
     [self.tweetManager openManagedDocument];
     
-    self.expandedSection = NO_EXPANDED_SECTION;
+    self.openSection = NO_EXPANDED_SECTION;
+    self.rowsToShowAtOpenSection = 7;
     
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 150;
+    self.tableView.estimatedRowHeight = 100;
 }
 
 -(void)managedObjectContextReady {
@@ -85,10 +90,12 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     
     float authorTweetCount = ((NSArray*)self.timeline[((JLITweet*)self.tweetGroups[section]).author.name]).count;
 
-    return (section == self.expandedSection) ?
+    return (section == self.openSection) ?
         // +1 because header tweet repeated in expanded form
-    (authorTweetCount > 8) ? 9 : authorTweetCount + 1
-    : 1;
+        (authorTweetCount > self.rowsToShowAtOpenSection) ?
+            self.rowsToShowAtOpenSection + 1
+            : authorTweetCount + 1
+        : 1;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -103,25 +110,25 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
     if (!indexPath.row) {
         
         NSInteger clickedSection = indexPath.section;
-        BOOL isExpanded = (self.expandedSection != NO_EXPANDED_SECTION);
+        BOOL isExpanded = (self.openSection != NO_EXPANDED_SECTION);
         NSInteger numberOfRowsToClose = 0;
         NSInteger sectionToClose = 0;
         NSInteger numberOfRowsToOpen = 0;
         
         if (isExpanded) {
             
-            if (self.expandedSection == clickedSection) {
+            if (self.openSection == clickedSection) {
                 numberOfRowsToClose = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
                 sectionToClose = clickedSection;
-                self.expandedSection = NO_EXPANDED_SECTION;
+                self.openSection = NO_EXPANDED_SECTION;
             } else {
-                numberOfRowsToClose = [self tableView:self.tableView numberOfRowsInSection:self.expandedSection];
-                sectionToClose = self.expandedSection;
-                self.expandedSection = clickedSection;
+                numberOfRowsToClose = [self tableView:self.tableView numberOfRowsInSection:self.openSection];
+                sectionToClose = self.openSection;
+                self.openSection = clickedSection;
                 numberOfRowsToOpen = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
             }
         } else {
-            self.expandedSection = clickedSection;
+            self.openSection = clickedSection;
             numberOfRowsToOpen = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
         }
   
@@ -138,7 +145,7 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         }
         [self.tableView endUpdates];
         
-    } else if (indexPath.row == 8){
+    } else if (indexPath.row == self.rowsToShowAtOpenSection){
         // TODO - gert more tweets
         NSLog(@"%@", @"hämtar fler tweets...");
     } else {
@@ -168,8 +175,6 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
             counter++;
         }
     }
-    
-    
     return [NSString stringWithFormat:@"%d", counter];
 }
 
@@ -196,12 +201,12 @@ static NSInteger const NO_EXPANDED_SECTION = -1;
         } else cell.badgeLabel.hidden = YES;
         return cell;
         
-    } else if (indexPath.row == 8) { // last row - get more tweets.
+    } else if (indexPath.row == self.rowsToShowAtOpenSection) { // last row - get more tweets.
         TweetCell *cell;
         cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
         cell.bodyLabel.text = @"Hämta fler tweets";
-        
+        cell.authorColorView.backgroundColor = [UIColor whiteColor];
         return cell;
     
     } else {
