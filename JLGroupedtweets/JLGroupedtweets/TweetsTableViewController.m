@@ -69,7 +69,8 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     self.rowsToShowAtOpenSection = DEFAULT_ROWS_TO_SHOW;
     
     self.tableView.rowHeight = UITableViewAutomaticDimension;
-    self.tableView.estimatedRowHeight = 100;
+    self.tableView.estimatedRowHeight = 75;
+
 }
 
 -(void)managedObjectContextReady {
@@ -151,7 +152,7 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
         
     } else if (indexPath.row == self.rowsToShowAtOpenSection){ // expand more
         
-        self.rowsToShowAtOpenSection += 5;
+        self.rowsToShowAtOpenSection += DEFAULT_ROWS_TO_SHOW;
         long numberOfRowsToOpen = [self tableView:self.tableView numberOfRowsInSection:indexPath.section];
         
         NSMutableArray *rowsToOpen = [NSMutableArray array];
@@ -222,16 +223,14 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
         return cell;
         
     } else if (indexPath.row == self.rowsToShowAtOpenSection) { // last row - get more tweets.
-        TweetCell *cell;
-        cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
+        TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
         cell.bodyLabel.text = @"Hämta fler tweets";
         cell.authorColorView.backgroundColor = [UIColor whiteColor];
         return cell;
     
     } else {
-        TweetCell *cell;
-        cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
+        TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
         tweet = tweetsByAuthor[indexPath.row -1];
         cell.bodyLabel.text = tweet.text;
