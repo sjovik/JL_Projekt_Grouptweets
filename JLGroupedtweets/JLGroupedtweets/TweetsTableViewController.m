@@ -39,6 +39,7 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 
 #pragma mark tweetManager callbacks
 -(void)refreshControlActivated {
+    [self.tweetManager fetchTimeline];
     NSLog(@"refreshing");
 }
 
@@ -51,6 +52,9 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     self.sinceId = sinceId;
     [self sortByTime];
     [self.tableView reloadData];
+    if ([self.refreshControl isRefreshing]) {
+        [self.refreshControl endRefreshing];
+    }
 }
 
 -(void)sortByTime {
@@ -70,7 +74,7 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     [super viewDidLoad];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
-    self.refreshControl.backgroundColor = [UIColor purpleColor];
+    self.refreshControl.backgroundColor = [UIColor colorWithRed:0.7f green:0.8f blue:0.2f alpha:1.0];
     self.refreshControl.tintColor = [UIColor whiteColor];
     [self.refreshControl addTarget:self
                             action:@selector(refreshControlActivated)

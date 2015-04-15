@@ -174,7 +174,7 @@
                                                                                                  NSHTTPURLResponse *urlResponse,
                                                                                                  NSError *error) {
                                                           if ([urlResponse statusCode] == 429) {
-                                                              NSLog(@"Max requests per 15 minuter överskridet");
+                                                              NSLog(@"Max requests per 15 minuter exeeded");
                                                               return;
                                                           }
                                                           if (error) {
