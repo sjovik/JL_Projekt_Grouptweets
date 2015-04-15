@@ -20,6 +20,8 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 
 @interface TweetsTableViewController ()
 
+@property (nonatomic) UIRefreshControl *refreshControl;
+
 @property (nonatomic) JLITweetManager *tweetManager;
 
 @property (nonatomic) NSDictionary *timeline;
@@ -36,6 +38,9 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 
 
 #pragma mark tweetManager callbacks
+-(void)refreshControlActivated {
+    NSLog(@"refreshing");
+}
 
 -(void)managedObjectContextReady {
     [self.tweetManager fetchTimeline];
@@ -64,15 +69,23 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.tweetManager = [[JLITweetManager alloc] init];
-    self.tweetManager.delegate = self;
-    [self.tweetManager openManagedDocument];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.backgroundColor = [UIColor purpleColor];
+    self.refreshControl.tintColor = [UIColor whiteColor];
+    [self.refreshControl addTarget:self
+                            action:@selector(refreshControlActivated)
+                  forControlEvents:UIControlEventValueChanged];
+
     
     self.openSection = NO_EXPANDED_SECTION;
     self.rowsToShowAtOpenSection = DEFAULT_ROWS_TO_SHOW;
     
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 75;
+    
+    self.tweetManager = [[JLITweetManager alloc] init];
+    self.tweetManager.delegate = self;
+    [self.tweetManager openManagedDocument];
 
 }
 
