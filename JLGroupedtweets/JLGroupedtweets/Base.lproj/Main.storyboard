@@ -51,12 +51,6 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5h1-B6-aDC" id="YOM-hF-UsW">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="bodyLabel" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5bq-ZD-vt4">
-                                            <rect key="frame" x="18" y="24" width="574" height="82"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fVj-AP-7ZV" userLabel="authorColorView">
                                             <rect key="frame" x="0.0" y="0.0" width="2" height="130"/>
                                             <color key="backgroundColor" red="0.76257159699999999" green="0.86933791039999997" blue="0.80924879400000005" alpha="1" colorSpace="calibratedRGB"/>
@@ -71,23 +65,30 @@
                                                 <constraint firstAttribute="height" constant="1" id="Ey1-Tt-OMQ"/>
                                             </constraints>
                                         </view>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMg-X1-l12" userLabel="tweetTextView">
+                                            <rect key="frame" x="18" y="16" width="566" height="97"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                            <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                                        </textView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="pMg-X1-l12" secondAttribute="trailing" constant="16" id="1ZU-9h-I9a"/>
+                                        <constraint firstItem="pMg-X1-l12" firstAttribute="leading" secondItem="fVj-AP-7ZV" secondAttribute="trailing" constant="16" id="23B-oS-T9f"/>
                                         <constraint firstAttribute="trailing" secondItem="SNH-iD-ehf" secondAttribute="trailing" id="CLG-UI-2ZR"/>
-                                        <constraint firstItem="5bq-ZD-vt4" firstAttribute="leading" secondItem="fVj-AP-7ZV" secondAttribute="trailing" constant="16" id="Ezf-QI-252"/>
+                                        <constraint firstItem="pMg-X1-l12" firstAttribute="top" secondItem="YOM-hF-UsW" secondAttribute="top" constant="16" id="ULD-dr-tDa"/>
                                         <constraint firstItem="fVj-AP-7ZV" firstAttribute="leading" secondItem="YOM-hF-UsW" secondAttribute="leading" id="VPn-UW-Xd2"/>
                                         <constraint firstItem="SNH-iD-ehf" firstAttribute="leading" secondItem="fVj-AP-7ZV" secondAttribute="trailing" id="Y3M-o0-sNC"/>
-                                        <constraint firstAttribute="bottomMargin" secondItem="5bq-ZD-vt4" secondAttribute="bottom" constant="16" id="aQn-oI-ZvO"/>
                                         <constraint firstItem="fVj-AP-7ZV" firstAttribute="top" secondItem="YOM-hF-UsW" secondAttribute="top" id="gef-kM-GbX"/>
+                                        <constraint firstItem="SNH-iD-ehf" firstAttribute="top" secondItem="pMg-X1-l12" secondAttribute="bottom" constant="16" id="q86-dD-Uw8"/>
                                         <constraint firstAttribute="bottom" secondItem="fVj-AP-7ZV" secondAttribute="bottom" id="sbv-Zz-uk0"/>
-                                        <constraint firstItem="5bq-ZD-vt4" firstAttribute="top" secondItem="YOM-hF-UsW" secondAttribute="topMargin" constant="16" id="ukq-zF-Ff0"/>
                                         <constraint firstAttribute="bottom" secondItem="SNH-iD-ehf" secondAttribute="bottom" id="vaM-qh-iEu"/>
-                                        <constraint firstItem="5bq-ZD-vt4" firstAttribute="trailing" secondItem="YOM-hF-UsW" secondAttribute="trailingMargin" id="w41-CH-oWP"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="authorColorView" destination="fVj-AP-7ZV" id="XEt-cj-9iK"/>
-                                    <outlet property="bodyLabel" destination="5bq-ZD-vt4" id="gji-RT-8st"/>
+                                    <outlet property="tweetTextView" destination="pMg-X1-l12" id="Ia3-j4-9vO"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

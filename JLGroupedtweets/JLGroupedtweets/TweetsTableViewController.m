@@ -18,7 +18,6 @@
 static NSInteger const NO_EXPANDED_SECTION = -1;
 static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 
-
 @interface TweetsTableViewController ()
 
 @property (nonatomic) JLITweetManager *tweetManager;
@@ -37,6 +36,10 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 
 
 #pragma mark tweetManager callbacks
+
+-(void)managedObjectContextReady {
+    [self.tweetManager fetchTimeline];
+}
 
 -(void)timelineFetched:(NSDictionary *)timeline sinceId:(NSString *)sinceId {
     self.timeline = timeline;
@@ -73,37 +76,12 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 
 }
 
--(void)managedObjectContextReady {
-    [self.tweetManager fetchTimeline];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return self.tweetGroups.count;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
-    float authorTweetCount = ((NSArray*)self.timeline[((JLITweet*)self.tweetGroups[section]).author.name]).count;
-
-    return (section == self.openSection) ?
-        // +1 because header tweet repeated in expanded form
-        (authorTweetCount > self.rowsToShowAtOpenSection) ?
-            self.rowsToShowAtOpenSection + 1
-            : authorTweetCount + 1
-        : 1;
-}
-
--(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewAutomaticDimension;
-}
+#pragma mark User Interaction
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -136,7 +114,7 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
             self.openSection = clickedSection;
             numberOfRowsToOpen = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
         }
-  
+        
         [self.tableView beginUpdates];
         if (numberOfRowsToClose > 0) {
             
@@ -144,7 +122,7 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
                              withRowAnimation:UITableViewRowAnimationTop];
         }
         if (numberOfRowsToOpen > 0) {
-
+            
             [tableView insertRowsAtIndexPaths:[self toggleNumOfRows:numberOfRowsToOpen inSection:clickedSection]
                              withRowAnimation:UITableViewRowAnimationTop];
         }
@@ -164,7 +142,7 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
         }
         [self.tableView beginUpdates];
         [tableView insertRowsAtIndexPaths:rowsToOpen
-            withRowAnimation:UITableViewRowAnimationTop];
+                         withRowAnimation:UITableViewRowAnimationTop];
         [tableView deleteRowsAtIndexPaths:@[indexPath]
                          withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
@@ -174,6 +152,48 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
         // TODO - länka till fullstorlek tweet.
     }
 }
+
+-(void)linkInTweetPressed:(id)sender {
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Open browser"
+                                                    message:@"This will open the link in your browser."
+                                                   delegate:self
+                                          cancelButtonTitle:@"Yes"
+                                          otherButtonTitles:@"No", nil];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == 0){
+        NSString *linkString = @"";
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkString]];
+    }
+}
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    // Return the number of sections.
+    return self.tweetGroups.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    float authorTweetCount = ((NSArray*)self.timeline[((JLITweet*)self.tweetGroups[section]).author.name]).count;
+
+    return (section == self.openSection) ?
+        // +1 because header tweet repeated in expanded form
+        (authorTweetCount > self.rowsToShowAtOpenSection) ?
+            self.rowsToShowAtOpenSection + 1
+            : authorTweetCount + 1
+        : 1;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return UITableViewAutomaticDimension;
+}
+
 
 -(NSArray *)toggleNumOfRows:(NSInteger)num inSection:(NSInteger)section {
     NSMutableArray *rowsToToggle = [NSMutableArray array];
@@ -225,7 +245,8 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     } else if (indexPath.row == self.rowsToShowAtOpenSection) { // last row - get more tweets.
         TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
-        cell.bodyLabel.text = @"Hämta fler tweets";
+        cell.tweetTextView.text = nil; // textView bug workaround
+        cell.tweetTextView.text = @"Hämta fler tweets";
         cell.authorColorView.backgroundColor = [UIColor whiteColor];
         return cell;
     
@@ -233,7 +254,8 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
         TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Tweet"
                                                forIndexPath:indexPath];
         tweet = tweetsByAuthor[indexPath.row -1];
-        cell.bodyLabel.text = tweet.text;
+        cell.tweetTextView.text = nil; // textView bug workaround
+        cell.tweetTextView.text = tweet.text;
         cell.authorColorView.backgroundColor = [UIColor colorwithHexString:tweet.author.color];
         return cell;
     }
