@@ -153,23 +153,6 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     }
 }
 
--(void)linkInTweetPressed:(id)sender {
-    
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Open browser"
-                                                    message:@"This will open the link in your browser."
-                                                   delegate:self
-                                          cancelButtonTitle:@"Yes"
-                                          otherButtonTitles:@"No", nil];
-    [alert show];
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == 0){
-        NSString *linkString = @"";
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:linkString]];
-    }
-}
-
 
 #pragma mark - Table view data source
 
