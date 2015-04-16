@@ -2,7 +2,7 @@
 //  JLITweetAuthor.m
 //  JLGroupedtweets
 //
-//  Created by Johannes on 2015-04-10.
+//  Created by Johannes on 2015-04-15.
 //  Copyright (c) 2015 Johannes. All rights reserved.
 //
 
@@ -12,10 +12,11 @@
 
 @implementation JLITweetAuthor
 
-@dynamic name;
 @dynamic color;
-@dynamic logoUrl;
 @dynamic id;
+@dynamic logoUrl;
+@dynamic name;
+@dynamic numOfNewTweets;
 @dynamic tweets;
 
 @end

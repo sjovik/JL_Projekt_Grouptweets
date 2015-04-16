@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JLITweetAuthor.h"
 
 @protocol JLITweetManagerDelegate <NSObject>
 
@@ -16,7 +17,7 @@
 
 @optional
 
--(void)timelineFetched:(NSDictionary *)timeline sinceId:(NSString *)sinceId;
+-(void)timelineFetched:(NSDictionary *)timeline;
 
 @end
 
@@ -24,10 +25,8 @@
 
 @property (nonatomic, weak) id<JLITweetManagerDelegate> delegate;
 
-
-@property (nonatomic) NSMutableDictionary *tweetsByAuthor;
-
 -(void)fetchTimeline;
 -(void)openManagedDocument;
+-(void)saveForTesting;
 
 @end

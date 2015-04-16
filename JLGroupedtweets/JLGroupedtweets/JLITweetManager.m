@@ -20,6 +20,8 @@
 
 @property (nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) NSArray *twitterData;
+@property (nonatomic) NSURL *filePath;
+@property (nonatomic) UIManagedDocument *document;
 @end
 
 
@@ -27,6 +29,17 @@
 
 
 #pragma mark CoreData
+
+// Saves managed document - For debugging purposes, NSManagedDocument autosaves.
+-(void)saveForTesting {
+    [self.document saveToURL:self.filePath
+       forSaveOperation:UIDocumentSaveForOverwriting
+      completionHandler:^(BOOL success) {
+          if (success) {
+              NSLog(@"Saving UIManagedDocument  - save for testing");
+          } else NSLog(@"Could not save file  - save for testing");
+      }];
+}
 
 -(void)openManagedDocument {
     
@@ -43,6 +56,7 @@
     if (fileExists) {
         [document openWithCompletionHandler:^(BOOL success) {
             if (success) {
+                NSLog(@"Opened file");
                 [self documentReady:document];
             } else NSLog(@"Could not open file");
         }];
@@ -51,14 +65,20 @@
            forSaveOperation:UIDocumentSaveForCreating
           completionHandler:^(BOOL success) {
               if (success) {
+                  NSLog(@"Created file");
                   [self documentReady:document];
               } else NSLog(@"Could not save file");
           }];
     }
+    
+    // For save for testing.
+    self.filePath = filePath;
+    self.document = document;
 }
 
 -(void)documentReady:(UIManagedDocument*) document {
     if (document.documentState == UIDocumentStateNormal) {
+        NSLog(@"Document ready");
         self.managedObjectContext = document.managedObjectContext;
         [self.delegate managedObjectContextReady];
     }
@@ -74,14 +94,9 @@
         tweet.text = tweetData[@"text"];
         tweet.date = [JLIHelperMethods formatTwitterDateFromString:tweetData[@"created_at"]];
         tweet.author = [JLITweetAuthor authorFromTweet:tweetData[@"user"] inManObjContext:self.managedObjectContext];
+        tweet.author.numOfNewTweets = [NSNumber numberWithInt:[tweet.author.numOfNewTweets intValue] + 1];
 
-        NSError *error;
-        if(![self.managedObjectContext save:&error]) {
-            NSLog(@"Failed to save.");
-        }
-        if (error) {
-            NSLog(@"Error: %@", error.localizedDescription);
-        }
+        [self saveForTesting];
     }
 }
 
@@ -95,7 +110,6 @@
     NSArray *authors = [self.managedObjectContext executeFetchRequest:request error:&error];
     
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
-    // [orderedTweetGroups sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     
     if(!authors || error) {
         if (error) NSLog(@"Error: %@", error.localizedDescription);
@@ -198,7 +212,7 @@
                                                               
                                                               dispatch_async(dispatch_get_main_queue(), ^{
                                                                   [self writeCoreData];
-                                                                  [self.delegate timelineFetched:[self timelineFromCoreData] sinceId:sinceId];
+                                                                  [self.delegate timelineFetched:[self timelineFromCoreData]];
                                                               });
                                                               
                                                           }

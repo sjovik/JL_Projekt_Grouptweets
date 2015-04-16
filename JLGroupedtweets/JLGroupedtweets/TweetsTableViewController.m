@@ -21,11 +21,11 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 @interface TweetsTableViewController ()
 
 @property (nonatomic) UIRefreshControl *refreshControl;
+@property (nonatomic) BOOL refreshingAllowed;
 
 @property (nonatomic) JLITweetManager *tweetManager;
 
 @property (nonatomic) NSDictionary *timeline;
-@property (nonatomic) NSString *sinceId;
 
 @property (nonatomic) NSArray *tweetGroups;
 @property (nonatomic) NSInteger openSection;
@@ -38,18 +38,15 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 
 
 #pragma mark tweetManager callbacks
--(void)refreshControlActivated {
-    [self.tweetManager fetchTimeline];
-    NSLog(@"refreshing");
-}
+
 
 -(void)managedObjectContextReady {
-    [self.tweetManager fetchTimeline];
+    self.refreshingAllowed = YES;
+    [self refreshControlActivated];
 }
 
--(void)timelineFetched:(NSDictionary *)timeline sinceId:(NSString *)sinceId {
+-(void)timelineFetched:(NSDictionary *)timeline {
     self.timeline = timeline;
-    self.sinceId = sinceId;
     [self sortByTime];
     [self.tableView reloadData];
     if ([self.refreshControl isRefreshing]) {
@@ -70,16 +67,11 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 }
 
 #pragma mark onLoad
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    self.refreshControl.backgroundColor = [UIColor colorWithRed:0.7f green:0.8f blue:0.2f alpha:1.0];
-    self.refreshControl.tintColor = [UIColor whiteColor];
-    [self.refreshControl addTarget:self
-                            action:@selector(refreshControlActivated)
-                  forControlEvents:UIControlEventValueChanged];
-
+    [self setupSearchControl];
     
     self.openSection = NO_EXPANDED_SECTION;
     self.rowsToShowAtOpenSection = DEFAULT_ROWS_TO_SHOW;
@@ -93,12 +85,26 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 
 }
 
+- (void)setupSearchControl {
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.backgroundColor = [UIColor colorWithRed:0.71f green:0.8f blue:0.8f alpha:1.0];
+    self.refreshControl.tintColor = [UIColor whiteColor];
+    [self.refreshControl addTarget:self
+                            action:@selector(refreshControlActivated)
+                  forControlEvents:UIControlEventValueChanged];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark User Interaction
+
+-(void)refreshControlActivated {
+    [self.tweetManager fetchTimeline];
+    NSLog(@"refreshing");
+}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -128,6 +134,7 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
                 numberOfRowsToOpen = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
             }
         } else {
+            [self resetUnreadBadge:indexPath];
             self.openSection = clickedSection;
             numberOfRowsToOpen = [self tableView:self.tableView numberOfRowsInSection:clickedSection];
         }
@@ -170,6 +177,17 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     }
 }
 
+- (void)resetUnreadBadge:(NSIndexPath *)indexPath {
+    
+    GroupHeaderCell *cell = (GroupHeaderCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    if (![cell.badgeLabel.text isEqualToString:@"0"]) {
+        JLITweet *tweet = self.tweetGroups[indexPath.section];
+        tweet.author.numOfNewTweets = @(0);
+        cell.badgeLabel.text = @"0";
+        cell.badgeLabel.hidden = YES;
+        [self.tweetManager saveForTesting];
+    }
+}
 
 #pragma mark - Table view data source
 
@@ -207,18 +225,6 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     return rowsToToggle;
 }
 
-- (NSString *)sinceLastUpdateInTweets:(NSArray *)tweets {
-    
-    int counter = 0;
-    
-    for (JLITweet *tweet in tweets) {
-        if ([tweet.id floatValue] > [self.sinceId floatValue]) {
-            counter++;
-        }
-    }
-    return [NSString stringWithFormat:@"%d", counter];
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     JLITweet *tweet;
@@ -227,14 +233,14 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     if (!indexPath.row) { // first row - group header cell
         GroupHeaderCell *cell;
         cell = [tableView dequeueReusableCellWithIdentifier:@"TweetsGroup"
-                                          forIndexPath:indexPath];
+                                               forIndexPath:indexPath];
         tweet = [tweetsByAuthor firstObject];
         
         cell.backgroundColor = [UIColor colorwithHexString:tweet.author.color];
         cell.groupNameLabel.textColor = [UIColor contrastingColor:cell.backgroundColor];
         cell.groupNameLabel.text = tweet.author.name;
         
-        NSString *badgeNumber = [self sinceLastUpdateInTweets:tweetsByAuthor];
+        NSString *badgeNumber = [tweet.author.numOfNewTweets stringValue];
         if (![badgeNumber isEqual: @"0"]) {
             cell.badgeLabel.hidden = NO;
             cell.badgeLabel.text = badgeNumber;

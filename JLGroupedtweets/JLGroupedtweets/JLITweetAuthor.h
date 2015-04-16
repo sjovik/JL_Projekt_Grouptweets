@@ -2,7 +2,7 @@
 //  JLITweetAuthor.h
 //  JLGroupedtweets
 //
-//  Created by Johannes on 2015-04-10.
+//  Created by Johannes on 2015-04-15.
 //  Copyright (c) 2015 Johannes. All rights reserved.
 //
 
@@ -13,10 +13,11 @@
 
 @interface JLITweetAuthor : NSManagedObject
 
-@property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * color;
-@property (nonatomic, retain) NSString * logoUrl;
 @property (nonatomic, retain) NSString * id;
+@property (nonatomic, retain) NSString * logoUrl;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSNumber * numOfNewTweets;
 @property (nonatomic, retain) NSSet *tweets;
 @end
 

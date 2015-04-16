@@ -13,8 +13,8 @@
 		8F61D5C01AD510470031BA87 /* TweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D5BF1AD510470031BA87 /* TweetCell.m */; };
 		8F61D6071AD7F5820031BA87 /* JLIHelperMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D6061AD7F5820031BA87 /* JLIHelperMethods.m */; };
 		8F61D6121AD815E80031BA87 /* JLITweetAuthor+Methods.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D6111AD815E80031BA87 /* JLITweetAuthor+Methods.m */; };
-		8F61D6151AD81FAF0031BA87 /* JLITweetAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D6141AD81FAF0031BA87 /* JLITweetAuthor.m */; };
 		8F61D6181AD81FB00031BA87 /* JLITweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D6171AD81FB00031BA87 /* JLITweet.m */; };
+		8F9F7D8B1ADE690A008C66E9 /* JLITweetAuthor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9F7D8A1ADE690A008C66E9 /* JLITweetAuthor.m */; };
 		8FF8C6521AC6DF9A00E68EE9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C6511AC6DF9A00E68EE9 /* main.m */; };
 		8FF8C6551AC6DF9A00E68EE9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C6541AC6DF9A00E68EE9 /* AppDelegate.m */; };
 		8FF8C6581AC6DF9A00E68EE9 /* JLGroupedtweets.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8FF8C6561AC6DF9A00E68EE9 /* JLGroupedtweets.xcdatamodeld */; };
@@ -50,10 +50,10 @@
 		8F61D6061AD7F5820031BA87 /* JLIHelperMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JLIHelperMethods.m; sourceTree = "<group>"; };
 		8F61D6101AD815E80031BA87 /* JLITweetAuthor+Methods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JLITweetAuthor+Methods.h"; sourceTree = "<group>"; };
 		8F61D6111AD815E80031BA87 /* JLITweetAuthor+Methods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "JLITweetAuthor+Methods.m"; sourceTree = "<group>"; };
-		8F61D6131AD81FAF0031BA87 /* JLITweetAuthor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JLITweetAuthor.h; sourceTree = "<group>"; };
-		8F61D6141AD81FAF0031BA87 /* JLITweetAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JLITweetAuthor.m; sourceTree = "<group>"; };
 		8F61D6161AD81FB00031BA87 /* JLITweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JLITweet.h; sourceTree = "<group>"; };
 		8F61D6171AD81FB00031BA87 /* JLITweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JLITweet.m; sourceTree = "<group>"; };
+		8F9F7D891ADE690A008C66E9 /* JLITweetAuthor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JLITweetAuthor.h; sourceTree = "<group>"; };
+		8F9F7D8A1ADE690A008C66E9 /* JLITweetAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JLITweetAuthor.m; sourceTree = "<group>"; };
 		8FF8C64C1AC6DF9A00E68EE9 /* JLGroupedtweets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JLGroupedtweets.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FF8C6501AC6DF9A00E68EE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FF8C6511AC6DF9A00E68EE9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -114,8 +114,8 @@
 				8FF8C6561AC6DF9A00E68EE9 /* JLGroupedtweets.xcdatamodeld */,
 				8F61D6161AD81FB00031BA87 /* JLITweet.h */,
 				8F61D6171AD81FB00031BA87 /* JLITweet.m */,
-				8F61D6131AD81FAF0031BA87 /* JLITweetAuthor.h */,
-				8F61D6141AD81FAF0031BA87 /* JLITweetAuthor.m */,
+				8F9F7D891ADE690A008C66E9 /* JLITweetAuthor.h */,
+				8F9F7D8A1ADE690A008C66E9 /* JLITweetAuthor.m */,
 				8F61D6101AD815E80031BA87 /* JLITweetAuthor+Methods.h */,
 				8F61D6111AD815E80031BA87 /* JLITweetAuthor+Methods.m */,
 			);
@@ -305,10 +305,10 @@
 				8F61D5BA1ACEA9180031BA87 /* UIColor+Extentions.m in Sources */,
 				8F61D6121AD815E80031BA87 /* JLITweetAuthor+Methods.m in Sources */,
 				8F61D5BD1AD510360031BA87 /* GroupHeaderCell.m in Sources */,
-				8F61D6151AD81FAF0031BA87 /* JLITweetAuthor.m in Sources */,
 				8FF8C67E1ACA809700E68EE9 /* TweetsTableViewController.m in Sources */,
 				8FF8C6521AC6DF9A00E68EE9 /* main.m in Sources */,
 				8FF8C6581AC6DF9A00E68EE9 /* JLGroupedtweets.xcdatamodeld in Sources */,
+				8F9F7D8B1ADE690A008C66E9 /* JLITweetAuthor.m in Sources */,
 				8FF8C6821ACA84E600E68EE9 /* JLITweetManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
