@@ -37,7 +37,10 @@
       completionHandler:^(BOOL success) {
           if (success) {
               NSLog(@"Saving UIManagedDocument  - save for testing");
-          } else NSLog(@"Could not save file  - save for testing");
+          } else {
+              NSLog(@"Could not save file  - save for testing");
+              return;
+          }
       }];
 }
 
@@ -58,7 +61,10 @@
             if (success) {
                 NSLog(@"Opened file");
                 [self documentReady:document];
-            } else NSLog(@"Could not open file");
+            } else {
+                NSLog(@"Could not open file");
+                return;
+            }
         }];
     } else {
         [document saveToURL:filePath
@@ -67,7 +73,10 @@
               if (success) {
                   NSLog(@"Created file");
                   [self documentReady:document];
-              } else NSLog(@"Could not save file");
+              } else {
+                  NSLog(@"Could not save file");
+                  return;
+              }
           }];
     }
     
