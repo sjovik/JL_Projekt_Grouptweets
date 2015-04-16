@@ -87,7 +87,6 @@
 -(void)writeCoreData {
     
     for (NSDictionary *tweetData in self.twitterData) {
-        
         JLITweet *tweet = [NSEntityDescription insertNewObjectForEntityForName:@"JLITweet"
                                                         inManagedObjectContext:self.managedObjectContext];
         tweet.id = tweetData[@"id_str"];
@@ -95,9 +94,8 @@
         tweet.date = [JLIHelperMethods formatTwitterDateFromString:tweetData[@"created_at"]];
         tweet.author = [JLITweetAuthor authorFromTweet:tweetData[@"user"] inManObjContext:self.managedObjectContext];
         tweet.author.numOfNewTweets = [NSNumber numberWithInt:[tweet.author.numOfNewTweets intValue] + 1];
-
-        [self saveForTesting];
     }
+    [self saveForTesting];
 }
 
 -(NSDictionary *)timelineFromCoreData {
@@ -141,13 +139,29 @@
 }
 
 -(void)deleteOldTweets {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"JLITweet"];
+    NSDate *twoWeeksAgo = [[NSDate date] dateByAddingTimeInterval:-(60*60*24*7*2)];
     
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(date <= %@)", twoWeeksAgo];
+    request.predicate = predicate;
+    
+    NSError *error;
+    NSArray *oldTweets = [self.managedObjectContext executeFetchRequest:request error:&error];
+    
+    if(!oldTweets || error) {
+        if(error) NSLog(@"Error: %@", error.localizedDescription);
+    } else {
+        for (JLITweet *oldTweet in oldTweets) {
+            NSLog(@"Old tweet deleted");
+            [self.managedObjectContext deleteObject:oldTweet];
+        }
+    }
 }
 
 #pragma mark TwitterAPI connections
 -(void)fetchTimeline {
     
-    // TODO - [self deleteOldTweets]
+    [self deleteOldTweets];
     NSString *sinceId = [self getLastTweetId];
     NSLog(@"since id: %@", sinceId);
     
