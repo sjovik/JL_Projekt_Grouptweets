@@ -12,11 +12,10 @@
 @protocol JLITweetManagerDelegate <NSObject>
 
 @required
-
+-(void)twitterAccountReady;
 -(void)managedObjectContextReady;
 
 @optional
-
 -(void)timelineFetched:(NSDictionary *)timeline;
 
 @end
@@ -26,6 +25,7 @@
 @property (nonatomic, weak) id<JLITweetManagerDelegate> delegate;
 
 -(void)fetchTimeline;
+-(void)setTwitterAccount;
 -(void)openManagedDocument;
 -(void)saveForTesting;
 

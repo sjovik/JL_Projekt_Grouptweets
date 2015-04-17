@@ -22,8 +22,8 @@
 @property (nonatomic) NSArray *twitterData;
 @property (nonatomic) NSURL *filePath;
 @property (nonatomic) UIManagedDocument *document;
+@property (nonatomic) ACAccount *currentAccount;
 @end
-
 
 @implementation JLITweetManager
 
@@ -46,11 +46,19 @@
 
 -(void)openManagedDocument {
     
+    if (!self.currentAccount) {
+        NSLog(@"No account found");
+        // TODO - alert user here.
+        return;
+    }
+    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     NSURL *docPath = [[fileManager URLsForDirectory:NSDocumentDirectory
                                           inDomains:NSUserDomainMask] firstObject];
-    NSURL *filePath = [docPath URLByAppendingPathComponent:@"JLITweetsByAuthorCD"];
+    NSURL *filePath = [docPath URLByAppendingPathComponent:[NSString stringWithFormat:@"%@%@",
+                                                            @"JLITweetsByAuthorCD",
+                                                            self.currentAccount.username]];
     
     UIManagedDocument *document = [[UIManagedDocument alloc] initWithFileURL:filePath];
     
@@ -168,86 +176,104 @@
 }
 
 #pragma mark TwitterAPI connections
+-(void)setupCurrentAccount:(NSArray *)allAccounts {
+    
+    if (allAccounts.count > 1) {
+        NSLog(@"More than one account detected");
+        NSLog(@"%@", allAccounts);
+                self.currentAccount = [allAccounts firstObject];
+    } else self.currentAccount = allAccounts[0];
+}
+
+-(void)setTwitterAccount {
+    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
+    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    self.currentAccount = [[ACAccount alloc] initWithAccountType:accountType];
+
+    [accountStore requestAccessToAccountsWithType:accountType options:nil
+                                       completion:^(BOOL granted, NSError *error) {
+                                           if (granted) {
+                                               NSLog(@"Account access granted");
+                                               
+                                               NSArray *allAccounts = [accountStore accountsWithAccountType:accountType];
+                                               if (allAccounts.count > 0) {
+                                                   [self setupCurrentAccount:allAccounts];
+                                               }
+                                           } else {
+                                               NSLog(@"Request to account not granted");
+                                           }
+                                           if (error) {
+                                               NSLog(@"Error: %@", error.localizedDescription);
+                                           }
+                                       }];
+    [self.delegate twitterAccountReady];
+}
+
 -(void)fetchTimeline {
+    
+    if (!self.currentAccount) {
+        NSLog(@"No account found");
+        // TODO - alert user here.
+        return;
+    }
     
     [self deleteOldTweets];
     NSString *sinceId = [self getLastTweetId];
     NSLog(@"since id: %@", sinceId);
     
-    ACAccountStore *accountStore = [[ACAccountStore alloc] init];
-    ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+    NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
+    NSDictionary *parameters = @{
+                                 @"count" : @"100",
+                                 @"include_entities" : @"0"
+                                 };
+    if (sinceId) {
+        parameters = @{
+                       @"count" : @"100",
+                       @"include_entities" : @"0",
+                       @"since_id" : sinceId
+                       };
+    }
+    SLRequest *tweetsRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
+                                                  requestMethod:SLRequestMethodGET
+                                                            URL:url
+                                                     parameters:parameters];
     
-    [accountStore requestAccessToAccountsWithType:accountType options:nil
-                                          completion:^(BOOL granted, NSError *error) {
-                                              if (granted) {
-                                                  NSLog(@"Account access granted");
-                                                  
-                                                  NSArray *allAccounts = [accountStore accountsWithAccountType:accountType];
-                                                  if (allAccounts.count > 0) {
-                                                      
-                                                      if (allAccounts.count > 1) {
-                                                          // TODO låt användare välja account
-                                                      }
-                                                      NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
-                                                      NSDictionary *parameters = @{
-                                                                                        @"count" : @"100",
-                                                                                        @"include_entities" : @"0"
-                                                                                   };
-                                                      if (sinceId) {
-                                                          parameters = @{
-                                                            @"count" : @"100",
-                                                            @"include_entities" : @"0",
-                                                            @"since_id" : sinceId
-                                                          };
-                                                      }
-                                                      SLRequest *tweetsRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
-                                                                                                    requestMethod:SLRequestMethodGET
-                                                                                                              URL:url
-                                                                                                       parameters:parameters];
-                                                      ACAccount *twAccount = allAccounts[0];
-                                                      [tweetsRequest setAccount:twAccount];
-                                                      
-                                                      [tweetsRequest performRequestWithHandler:^(NSData *responseData,
-                                                                                                 NSHTTPURLResponse *urlResponse,
-                                                                                                 NSError *error) {
-                                                          if ([urlResponse statusCode] == 429) {
-                                                              NSLog(@"Max requests per 15 minuter exeeded");
-                                                              return;
-                                                          }
-                                                          if (error) {
-                                                              NSLog(@"Error: %@", error.localizedDescription);
-                                                              return;
-                                                          }
-                                                          
-                                                          if (responseData) {
-                                                              NSError *jsonError = nil;
-                                                              NSArray *tweetsData = [NSJSONSerialization JSONObjectWithData:responseData
-                                                                                                                options:NSJSONReadingMutableLeaves
-                                                                                                                  error:&jsonError];
-                                                              if (jsonError) {
-                                                                  NSLog(@"Error parsing json");
-                                                                  return;
-                                                              }
-                                                              
-                                                              self.twitterData = tweetsData;
-                                                              
-                                                              NSLog(@"Timeline fetched %lu items", (unsigned long)self.twitterData.count);
-                                                              
-                                                              dispatch_async(dispatch_get_main_queue(), ^{
-                                                                  [self writeCoreData];
-                                                                  [self.delegate timelineFetched:[self timelineFromCoreData]];
-                                                              });
-                                                              
-                                                          }
-                                                      }];
-                                                  }
-                                              } else {
-                                                  NSLog(@"Request to account not granted");
-                                              }
-                                              if (error) {
-                                                  NSLog(@"Error: %@", error.localizedDescription);
-                                              }
-                                          }];
+    [tweetsRequest setAccount:self.currentAccount];
+    
+    [tweetsRequest performRequestWithHandler:^(NSData *responseData,
+                                               NSHTTPURLResponse *urlResponse,
+                                               NSError *error) {
+        if ([urlResponse statusCode] == 429) {
+            NSLog(@"Max requests per 15 minuter exeeded");
+            return;
+        }
+        if (error) {
+            NSLog(@"Error: %@", error.localizedDescription);
+            return;
+        }
+        
+        if (responseData) {
+            NSError *jsonError = nil;
+            NSArray *tweetsData = [NSJSONSerialization JSONObjectWithData:responseData
+                                                                  options:NSJSONReadingMutableLeaves
+                                                                    error:&jsonError];
+            if (jsonError) {
+                NSLog(@"Error parsing json");
+                return;
+            }
+            
+            self.twitterData = tweetsData;
+            
+            NSLog(@"Timeline fetched %lu items", (unsigned long)self.twitterData.count);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self writeCoreData];
+                [self.delegate timelineFetched:[self timelineFromCoreData]];
+            });
+            
+        }
+    }];
+
     
     
 }

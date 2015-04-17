@@ -38,7 +38,9 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 
 
 #pragma mark tweetManager callbacks
-
+-(void)twitterAccountReady {
+    [self.tweetManager openManagedDocument];
+}
 
 -(void)managedObjectContextReady {
     self.refreshingAllowed = YES;
@@ -81,7 +83,7 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     
     self.tweetManager = [[JLITweetManager alloc] init];
     self.tweetManager.delegate = self;
-    [self.tweetManager openManagedDocument];
+    [self.tweetManager setTwitterAccount];
 
 }
 
