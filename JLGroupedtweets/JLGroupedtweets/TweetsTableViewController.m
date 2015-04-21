@@ -175,7 +175,7 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
         
         NSLog(@"%@", @"hämtar fler tweets...");
     } else {
-        // TODO - länka till fullstorlek tweet.
+        [self performSegueWithIdentifier:@"InspectTweet" sender:self];
     }
 }
 
@@ -266,6 +266,14 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
         cell.tweetTextView.text = tweet.text;
         cell.authorColorView.backgroundColor = [UIColor colorwithHexString:tweet.author.color];
         return cell;
+    }
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+
+    if ([[segue identifier] isEqualToString:@"InspectTweet"]) {
+        FullSizeTweetViewController *fstvc = [segue destinationViewController];
+        fstvc.title = @"Hej";
     }
 }
 

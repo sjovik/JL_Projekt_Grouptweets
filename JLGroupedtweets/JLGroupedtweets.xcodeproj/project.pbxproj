@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F0DF1591AE654F700509C6A /* FullSizeTweetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F0DF1581AE654F700509C6A /* FullSizeTweetViewController.m */; };
 		8F61D5B41ACA8E750031BA87 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F61D5B31ACA8E750031BA87 /* Twitter.framework */; };
 		8F61D5BA1ACEA9180031BA87 /* UIColor+Extentions.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D5B91ACEA9180031BA87 /* UIColor+Extentions.m */; };
 		8F61D5BD1AD510360031BA87 /* GroupHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F61D5BC1AD510360031BA87 /* GroupHeaderCell.m */; };
@@ -39,6 +40,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8F0DF1571AE654F700509C6A /* FullSizeTweetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullSizeTweetViewController.h; sourceTree = "<group>"; };
+		8F0DF1581AE654F700509C6A /* FullSizeTweetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullSizeTweetViewController.m; sourceTree = "<group>"; };
 		8F61D5B31ACA8E750031BA87 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		8F61D5B81ACEA9180031BA87 /* UIColor+Extentions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Extentions.h"; sourceTree = "<group>"; };
 		8F61D5B91ACEA9180031BA87 /* UIColor+Extentions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Extentions.m"; sourceTree = "<group>"; };
@@ -95,7 +98,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8F61D5B21ACA87AD0031BA87 /* TableView */ = {
+		8F61D5B21ACA87AD0031BA87 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
 				8FF8C67C1ACA809700E68EE9 /* TweetsTableViewController.h */,
@@ -104,8 +107,10 @@
 				8F61D5BC1AD510360031BA87 /* GroupHeaderCell.m */,
 				8F61D5BE1AD510470031BA87 /* TweetCell.h */,
 				8F61D5BF1AD510470031BA87 /* TweetCell.m */,
+				8F0DF1571AE654F700509C6A /* FullSizeTweetViewController.h */,
+				8F0DF1581AE654F700509C6A /* FullSizeTweetViewController.m */,
 			);
-			name = TableView;
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 		8F61D6091AD7F62F0031BA87 /* CoreData */ = {
@@ -146,7 +151,7 @@
 		8FF8C64E1AC6DF9A00E68EE9 /* JLGroupedtweets */ = {
 			isa = PBXGroup;
 			children = (
-				8F61D5B21ACA87AD0031BA87 /* TableView */,
+				8F61D5B21ACA87AD0031BA87 /* ViewControllers */,
 				8FF8C67F1ACA843200E68EE9 /* Data */,
 				8FF8C65C1AC6DF9A00E68EE9 /* Main.storyboard */,
 				8FF8C65F1AC6DF9A00E68EE9 /* Images.xcassets */,
@@ -298,6 +303,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F0DF1591AE654F700509C6A /* FullSizeTweetViewController.m in Sources */,
 				8F61D6071AD7F5820031BA87 /* JLIHelperMethods.m in Sources */,
 				8F61D6181AD81FB00031BA87 /* JLITweet.m in Sources */,
 				8F61D5C01AD510470031BA87 /* TweetCell.m in Sources */,

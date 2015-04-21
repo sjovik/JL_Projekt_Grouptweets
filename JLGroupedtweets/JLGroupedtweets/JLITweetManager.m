@@ -18,10 +18,12 @@
 
 @interface JLITweetManager()
 
-@property (nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic) NSArray *twitterData;
 @property (nonatomic) NSURL *filePath;
 @property (nonatomic) UIManagedDocument *document;
+@property (nonatomic) NSManagedObjectContext *managedObjectContext;
+
+@property (nonatomic) NSArray *twitterData;
+
 @property (nonatomic) NSArray *allAccounts;
 @property (nonatomic) ACAccount *currentAccount;
 @end
@@ -177,25 +179,29 @@
 #pragma mark TwitterAPI connections
 -(void)setupCurrentAccount {
     
-    if (self.allAccounts.count > 1) {
-        
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Multiple Twitter accounts"
-                                                          message:@"Please choose the account you want to use."
-                                                         delegate:self
-                                                cancelButtonTitle:((ACAccount*)[self.allAccounts firstObject]).accountDescription
-                                                otherButtonTitles:nil];
-        
-        for (int i = 1; i < 3 && i < self.allAccounts.count; i++) {
-            ACAccount *acc = self.allAccounts[i];
-            [message addButtonWithTitle:acc.accountDescription];
-        }
-        
-        [message show];
-        
-        NSLog(@"More than one account");
-        NSLog(@"%@", self.allAccounts);
-        
-    } else self.currentAccount = self.allAccounts[0];
+    // Only using main account during testing.
+    self.currentAccount = self.allAccounts[1];
+    
+    
+//    if (self.allAccounts.count > 1) {
+//        
+//        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Multiple Twitter accounts"
+//                                                          message:@"Please choose the account you want to use."
+//                                                         delegate:self
+//                                                cancelButtonTitle:((ACAccount*)[self.allAccounts firstObject]).accountDescription
+//                                                otherButtonTitles:nil];
+//        
+//        for (int i = 1; i < 3 && i < self.allAccounts.count; i++) {
+//            ACAccount *acc = self.allAccounts[i];
+//            [message addButtonWithTitle:acc.accountDescription];
+//        }
+//        
+//        [message show];
+//        
+//        NSLog(@"More than one account");
+//        NSLog(@"%@", self.allAccounts);
+//        
+//    } else self.currentAccount = self.allAccounts[0];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -228,7 +234,15 @@
                                                self.allAccounts = [accountStore accountsWithAccountType:accountType];
                                                if (self.allAccounts.count > 0) {
                                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                                       [self setupCurrentAccount];
+                                                       if (self.allAccounts.count > 1) {
+                                                           [self setupCurrentAccount];
+                                                           // While testing:
+                                                           [self.delegate twitterAccountReady];
+                                                       } else {
+                                                           [self setupCurrentAccount];
+                                                           [self.delegate twitterAccountReady];
+                                                       }
+                                                       
                                                    });
                                                }
                                            } else {
@@ -300,12 +314,8 @@
                 [self writeCoreData];
                 [self.delegate timelineFetched:[self timelineFromCoreData]];
             });
-            
         }
     }];
-
-    
-    
 }
 
 

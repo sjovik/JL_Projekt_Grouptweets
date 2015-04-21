@@ -65,12 +65,11 @@
                                                 <constraint firstAttribute="height" constant="1" id="Ey1-Tt-OMQ"/>
                                             </constraints>
                                         </view>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMg-X1-l12" userLabel="tweetTextView">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMg-X1-l12" userLabel="tweetTextView">
                                             <rect key="frame" x="18" y="16" width="566" height="97"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
-                                            <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                         </textView>
                                     </subviews>
                                     <constraints>
@@ -101,7 +100,25 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DqN-ZZ-xnQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="935" y="655"/>
+            <point key="canvasLocation" x="860" y="655"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="TPt-hM-bML">
+            <objects>
+                <viewController id="CBg-x0-U5z" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mWn-ET-k6g"/>
+                        <viewControllerLayoutGuide type="bottom" id="DHH-nq-3zD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cEn-x4-Z3H">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wue-bi-JGO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1571" y="655"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sp5-D6-dHl">
