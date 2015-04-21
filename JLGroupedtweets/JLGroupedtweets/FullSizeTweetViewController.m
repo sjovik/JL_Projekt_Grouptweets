@@ -10,6 +10,7 @@
 
 @interface FullSizeTweetViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *tweetTextView;
+@property (strong, nonatomic) IBOutlet UIImageView *tweetImageView;
 
 @end
 
@@ -20,6 +21,25 @@
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tweetTextView.text = self.tweet.text;
+    if (self.tweet.imgUrl) {
+        [self loadTweetImage];
+    }
+}
+
+- (void)loadTweetImage {
+    
+    dispatch_async(dispatch_get_global_queue(0,0), ^{
+        NSData *imageData = [[NSData alloc] initWithContentsOfURL: [NSURL URLWithString:self.tweet.imgUrl]];
+        if (!imageData) {
+            NSLog(@"No image data");
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"Image loaded");
+            self.tweetImageView.image = [UIImage imageWithData: imageData];
+        });
+    });
+    
 }
 
 - (void)didReceiveMemoryWarning {

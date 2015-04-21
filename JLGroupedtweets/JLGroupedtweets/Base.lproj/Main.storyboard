@@ -126,16 +126,27 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>
                             </textView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Bev-aa-AeD">
+                                <rect key="frame" x="169" y="396" width="263" height="173"/>
+                                <color key="backgroundColor" red="0.76257159699999999" green="0.86933791039999997" blue="0.80924879400000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="263" id="snb-eV-hog"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="O57-Y4-x6T" firstAttribute="top" secondItem="mWn-ET-k6g" secondAttribute="bottom" constant="24" id="7ks-xN-XRg"/>
                             <constraint firstItem="O57-Y4-x6T" firstAttribute="leading" secondItem="cEn-x4-Z3H" secondAttribute="leadingMargin" constant="24" id="S2H-JF-U9v"/>
                             <constraint firstAttribute="trailingMargin" secondItem="O57-Y4-x6T" secondAttribute="trailing" constant="24" id="Yq4-NO-HPk"/>
+                            <constraint firstItem="Bev-aa-AeD" firstAttribute="top" secondItem="O57-Y4-x6T" secondAttribute="bottom" constant="8" id="ipO-PF-5FQ"/>
+                            <constraint firstItem="DHH-nq-3zD" firstAttribute="top" secondItem="Bev-aa-AeD" secondAttribute="bottom" constant="31" id="kfH-My-glR"/>
                             <constraint firstItem="O57-Y4-x6T" firstAttribute="height" secondItem="cEn-x4-Z3H" secondAttribute="height" multiplier="0.5" id="pF2-JN-of6"/>
+                            <constraint firstItem="Bev-aa-AeD" firstAttribute="centerX" secondItem="O57-Y4-x6T" secondAttribute="centerX" id="sbU-yG-PZ7"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="tweetImageView" destination="Bev-aa-AeD" id="NJu-Vt-4d3"/>
                         <outlet property="tweetTextView" destination="O57-Y4-x6T" id="qez-2v-k4d"/>
                     </connections>
                 </viewController>

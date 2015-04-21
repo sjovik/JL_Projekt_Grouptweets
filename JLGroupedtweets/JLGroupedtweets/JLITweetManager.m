@@ -110,6 +110,12 @@
         tweet.id = tweetData[@"id_str"];
         tweet.text = tweetData[@"text"];
         tweet.date = [JLIHelperMethods formatTwitterDateFromString:tweetData[@"created_at"]];
+        
+        NSString *imageUrl = tweetData[@"entities"][@"media"][0][@"media_url"];
+        NSLog(@"%@", imageUrl);
+        if (imageUrl) {
+            tweet.imgUrl = imageUrl;
+        }
         tweet.author = [JLITweetAuthor authorFromTweet:tweetData[@"user"] inManObjContext:self.managedObjectContext];
         tweet.author.numOfNewTweets = [NSNumber numberWithInt:[tweet.author.numOfNewTweets intValue] + 1];
     }
@@ -180,28 +186,27 @@
 -(void)setupCurrentAccount {
     
     // Only using main account during testing.
-    self.currentAccount = self.allAccounts[1];
+    // self.currentAccount = self.allAccounts[1];
     
     
-//    if (self.allAccounts.count > 1) {
-//        
-//        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Multiple Twitter accounts"
-//                                                          message:@"Please choose the account you want to use."
-//                                                         delegate:self
-//                                                cancelButtonTitle:((ACAccount*)[self.allAccounts firstObject]).accountDescription
-//                                                otherButtonTitles:nil];
-//        
-//        for (int i = 1; i < 3 && i < self.allAccounts.count; i++) {
-//            ACAccount *acc = self.allAccounts[i];
-//            [message addButtonWithTitle:acc.accountDescription];
-//        }
-//        
-//        [message show];
-//        
-//        NSLog(@"More than one account");
-//        NSLog(@"%@", self.allAccounts);
-//        
-//    } else self.currentAccount = self.allAccounts[0];
+    if (self.allAccounts.count > 1) {
+        
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Multiple Twitter accounts"
+                                                          message:@"Please choose the account you want to use."
+                                                         delegate:self
+                                                cancelButtonTitle:((ACAccount*)[self.allAccounts firstObject]).accountDescription
+                                                otherButtonTitles:nil];
+        
+        for (int i = 1; i < 3 && i < self.allAccounts.count; i++) {
+            ACAccount *acc = self.allAccounts[i];
+            [message addButtonWithTitle:acc.accountDescription];
+        }
+        
+        [message show];
+        
+        NSLog(@"More than one account found");
+        
+    } else self.currentAccount = self.allAccounts[0];
 }
 
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -237,7 +242,7 @@
                                                        if (self.allAccounts.count > 1) {
                                                            [self setupCurrentAccount];
                                                            // While testing:
-                                                           [self.delegate twitterAccountReady];
+                                                           // [self.delegate twitterAccountReady];
                                                        } else {
                                                            [self setupCurrentAccount];
                                                            [self.delegate twitterAccountReady];
@@ -275,7 +280,7 @@
     if (sinceId) {
         parameters = @{
                        @"count" : @"100",
-                       @"include_entities" : @"0",
+                       @"include_entities" : @"1",
                        @"since_id" : sinceId
                        };
     }
