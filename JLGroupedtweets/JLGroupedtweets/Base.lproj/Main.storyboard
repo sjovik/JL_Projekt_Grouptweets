@@ -46,7 +46,7 @@
                                     <outlet property="groupNameLabel" destination="aBR-td-Sd6" id="52d-9O-lZc"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Tweet" rowHeight="130" id="5h1-B6-aDC" customClass="TweetCell">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Tweet" rowHeight="130" id="5h1-B6-aDC" customClass="TweetCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5h1-B6-aDC" id="YOM-hF-UsW">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -59,14 +59,14 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SNH-iD-ehf" userLabel="DividerView">
-                                            <rect key="frame" x="2" y="129" width="598" height="1"/>
+                                            <rect key="frame" x="2" y="129" width="565" height="1"/>
                                             <color key="backgroundColor" red="0.88869160353535359" green="0.88869160353535359" blue="0.88869160353535359" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="1" id="Ey1-Tt-OMQ"/>
                                             </constraints>
                                         </view>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMg-X1-l12" userLabel="tweetTextView">
-                                            <rect key="frame" x="18" y="16" width="566" height="97"/>
+                                        <textView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pMg-X1-l12" userLabel="tweetTextView">
+                                            <rect key="frame" x="18" y="16" width="533" height="97"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
@@ -97,15 +97,18 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="vSo-UJ-fwh"/>
+                    <connections>
+                        <segue destination="CBg-x0-U5z" kind="show" identifier="InspectTweet" id="3uC-gv-xXB"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DqN-ZZ-xnQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="860" y="655"/>
         </scene>
-        <!--View Controller-->
+        <!--Full Size Tweet View Controller-->
         <scene sceneID="TPt-hM-bML">
             <objects>
-                <viewController id="CBg-x0-U5z" sceneMemberID="viewController">
+                <viewController id="CBg-x0-U5z" customClass="FullSizeTweetViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="mWn-ET-k6g"/>
                         <viewControllerLayoutGuide type="bottom" id="DHH-nq-3zD"/>

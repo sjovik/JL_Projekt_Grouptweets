@@ -14,6 +14,7 @@
 #import "JLITweet.h"
 #import "UIColor+Extentions.h"
 
+#import "FullSizeTweetViewController.h"
 
 static NSInteger const NO_EXPANDED_SECTION = -1;
 static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
