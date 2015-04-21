@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "JLITweetAuthor.h"
 
 @protocol JLITweetManagerDelegate <NSObject>
@@ -20,7 +21,7 @@
 
 @end
 
-@interface JLITweetManager : NSObject
+@interface JLITweetManager : NSObject<UIAlertViewDelegate>
 
 @property (nonatomic, weak) id<JLITweetManagerDelegate> delegate;
 

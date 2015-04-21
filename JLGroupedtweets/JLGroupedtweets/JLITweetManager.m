@@ -22,6 +22,7 @@
 @property (nonatomic) NSArray *twitterData;
 @property (nonatomic) NSURL *filePath;
 @property (nonatomic) UIManagedDocument *document;
+@property (nonatomic) NSArray *allAccounts;
 @property (nonatomic) ACAccount *currentAccount;
 @end
 
@@ -48,7 +49,6 @@
     
     if (!self.currentAccount) {
         NSLog(@"No account found");
-        // TODO - alert user here.
         return;
     }
     
@@ -87,7 +87,6 @@
               }
           }];
     }
-    
     // For save for testing.
     self.filePath = filePath;
     self.document = document;
@@ -176,13 +175,44 @@
 }
 
 #pragma mark TwitterAPI connections
--(void)setupCurrentAccount:(NSArray *)allAccounts {
+-(void)setupCurrentAccount {
     
-    if (allAccounts.count > 1) {
-        NSLog(@"More than one account detected");
-        NSLog(@"%@", allAccounts);
-                self.currentAccount = [allAccounts firstObject];
-    } else self.currentAccount = allAccounts[0];
+    if (self.allAccounts.count > 1) {
+        
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Multiple Twitter accounts"
+                                                          message:@"Please choose the account you want to use."
+                                                         delegate:self
+                                                cancelButtonTitle:((ACAccount*)[self.allAccounts firstObject]).accountDescription
+                                                otherButtonTitles:nil];
+        
+        for (int i = 1; i < 3 && i < self.allAccounts.count; i++) {
+            ACAccount *acc = self.allAccounts[i];
+            [message addButtonWithTitle:acc.accountDescription];
+        }
+        
+        [message show];
+        
+        NSLog(@"More than one account");
+        NSLog(@"%@", self.allAccounts);
+        
+    } else self.currentAccount = self.allAccounts[0];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
+    switch (buttonIndex) {
+        case 1:
+            self.currentAccount = self.allAccounts[1];
+            break;
+        case 2:
+            self.currentAccount = self.allAccounts[2];
+            break;
+        default:
+            self.currentAccount = self.allAccounts[0];
+            break;
+    }
+    [self.delegate twitterAccountReady];
+    
 }
 
 -(void)setTwitterAccount {
@@ -195,9 +225,11 @@
                                            if (granted) {
                                                NSLog(@"Account access granted");
                                                
-                                               NSArray *allAccounts = [accountStore accountsWithAccountType:accountType];
-                                               if (allAccounts.count > 0) {
-                                                   [self setupCurrentAccount:allAccounts];
+                                               self.allAccounts = [accountStore accountsWithAccountType:accountType];
+                                               if (self.allAccounts.count > 0) {
+                                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                                       [self setupCurrentAccount];
+                                                   });
                                                }
                                            } else {
                                                NSLog(@"Request to account not granted");
@@ -206,7 +238,7 @@
                                                NSLog(@"Error: %@", error.localizedDescription);
                                            }
                                        }];
-    [self.delegate twitterAccountReady];
+    
 }
 
 -(void)fetchTimeline {
@@ -239,7 +271,6 @@
                                                      parameters:parameters];
     
     [tweetsRequest setAccount:self.currentAccount];
-    
     [tweetsRequest performRequestWithHandler:^(NSData *responseData,
                                                NSHTTPURLResponse *urlResponse,
                                                NSError *error) {
@@ -251,7 +282,6 @@
             NSLog(@"Error: %@", error.localizedDescription);
             return;
         }
-        
         if (responseData) {
             NSError *jsonError = nil;
             NSArray *tweetsData = [NSJSONSerialization JSONObjectWithData:responseData
