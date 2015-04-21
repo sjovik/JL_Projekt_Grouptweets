@@ -9,6 +9,7 @@
 #import "FullSizeTweetViewController.h"
 
 @interface FullSizeTweetViewController ()
+@property (weak, nonatomic) IBOutlet UITextView *tweetTextView;
 
 @end
 
@@ -16,7 +17,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tweetTextView.text = self.tweet.text;
 }
 
 - (void)didReceiveMemoryWarning {

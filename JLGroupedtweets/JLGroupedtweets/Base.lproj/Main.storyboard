@@ -3,6 +3,7 @@
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Tweets Table View Controller-->
@@ -116,8 +117,27 @@
                     <view key="view" contentMode="scaleToFill" id="cEn-x4-Z3H">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O57-Y4-x6T">
+                                <rect key="frame" x="40" y="88" width="520" height="300"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna </string>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="O57-Y4-x6T" firstAttribute="top" secondItem="mWn-ET-k6g" secondAttribute="bottom" constant="24" id="7ks-xN-XRg"/>
+                            <constraint firstItem="O57-Y4-x6T" firstAttribute="leading" secondItem="cEn-x4-Z3H" secondAttribute="leadingMargin" constant="24" id="S2H-JF-U9v"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="O57-Y4-x6T" secondAttribute="trailing" constant="24" id="Yq4-NO-HPk"/>
+                            <constraint firstItem="O57-Y4-x6T" firstAttribute="height" secondItem="cEn-x4-Z3H" secondAttribute="height" multiplier="0.5" id="pF2-JN-of6"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tweetTextView" destination="O57-Y4-x6T" id="qez-2v-k4d"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wue-bi-JGO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

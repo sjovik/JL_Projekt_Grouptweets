@@ -111,7 +111,7 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     
     // If first row of section, expand section; else segue to full size tweet view.
     if (!indexPath.row) {
@@ -178,6 +178,8 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     } else {
         [self performSegueWithIdentifier:@"InspectTweet" sender:self];
     }
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)resetUnreadBadge:(NSIndexPath *)indexPath {
@@ -271,10 +273,15 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-
+    NSIndexPath *indexPath = [[NSIndexPath alloc] init];
+    indexPath = [self.tableView indexPathForSelectedRow];
+    NSArray *tweetsByAuthor = self.timeline[((JLITweet *)self.tweetGroups[indexPath.section]).author.name];
+    
     if ([[segue identifier] isEqualToString:@"InspectTweet"]) {
         FullSizeTweetViewController *fstvc = [segue destinationViewController];
-        fstvc.title = @"Hej";
+        JLITweet *tweet = tweetsByAuthor[indexPath.row -1];
+        fstvc.title = tweet.author.name;
+        fstvc.tweet = tweet;
     }
 }
 
