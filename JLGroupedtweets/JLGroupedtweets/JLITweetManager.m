@@ -112,7 +112,6 @@
         tweet.date = [JLIHelperMethods formatTwitterDateFromString:tweetData[@"created_at"]];
         
         NSString *imageUrl = tweetData[@"entities"][@"media"][0][@"media_url"];
-        NSLog(@"%@", imageUrl);
         if (imageUrl) {
             tweet.imgUrl = imageUrl;
         }
@@ -154,7 +153,7 @@
     NSArray *tweets = [self.managedObjectContext executeFetchRequest:request error:&error];
     
     if(!tweets || error) {
-        NSLog(@"Error: %@", error.localizedDescription);
+        if(error) NSLog(@"Error: %@", error.localizedDescription);
         return nil;
     } else {
         JLITweet *tweet = [tweets lastObject];

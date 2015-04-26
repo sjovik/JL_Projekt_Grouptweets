@@ -52,6 +52,8 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     self.timeline = timeline;
     [self sortByTime];
     [self.tableView reloadData];
+    
+    self.refreshingAllowed = YES;
     if ([self.refreshControl isRefreshing]) {
         [self.refreshControl endRefreshing];
     }
@@ -105,13 +107,15 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
 #pragma mark User Interaction
 
 -(void)refreshControlActivated {
-    [self.tweetManager fetchTimeline];
-    NSLog(@"refreshing");
+    if (self.refreshingAllowed) {
+        self.refreshingAllowed = NO;
+        [self.tweetManager fetchTimeline];
+        NSLog(@"refreshing");
+    }
+
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
     
     // If first row of section, expand section; else segue to full size tweet view.
     if (!indexPath.row) {

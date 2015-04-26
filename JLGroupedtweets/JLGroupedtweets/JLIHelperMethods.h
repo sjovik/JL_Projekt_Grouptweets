@@ -11,6 +11,8 @@
 
 @interface JLIHelperMethods : NSObject
 
-+(NSDate *)formatTwitterDateFromString:(NSString *)date;
++ (NSDate *)formatTwitterDateFromString:(NSString *)date;
++ (UIImage *)imageWithImage:(UIImage *)image scaledToSize:(CGSize)newSize;
++ (UIImage *)imageWithImage:(UIImage *)image scaledToAspectFitSize:(CGSize)size;
 
 @end

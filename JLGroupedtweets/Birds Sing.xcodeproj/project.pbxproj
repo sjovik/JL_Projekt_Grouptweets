@@ -57,7 +57,7 @@
 		8F61D6171AD81FB00031BA87 /* JLITweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JLITweet.m; sourceTree = "<group>"; };
 		8F9F7D891ADE690A008C66E9 /* JLITweetAuthor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JLITweetAuthor.h; sourceTree = "<group>"; };
 		8F9F7D8A1ADE690A008C66E9 /* JLITweetAuthor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JLITweetAuthor.m; sourceTree = "<group>"; };
-		8FF8C64C1AC6DF9A00E68EE9 /* JLGroupedtweets.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JLGroupedtweets.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FF8C64C1AC6DF9A00E68EE9 /* Birds Sing.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Birds Sing.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FF8C6501AC6DF9A00E68EE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FF8C6511AC6DF9A00E68EE9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8FF8C6531AC6DF9A00E68EE9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -66,7 +66,7 @@
 		8FF8C65D1AC6DF9A00E68EE9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8FF8C65F1AC6DF9A00E68EE9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		8FF8C6621AC6DF9A00E68EE9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		8FF8C6681AC6DF9A00E68EE9 /* JLGroupedtweetsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JLGroupedtweetsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FF8C6681AC6DF9A00E68EE9 /* Birds SingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Birds SingTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FF8C66D1AC6DF9A00E68EE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FF8C66E1AC6DF9A00E68EE9 /* JLGroupedtweetsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JLGroupedtweetsTests.m; sourceTree = "<group>"; };
 		8FF8C6781ACA7FE000E68EE9 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -142,8 +142,8 @@
 		8FF8C64D1AC6DF9A00E68EE9 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8FF8C64C1AC6DF9A00E68EE9 /* JLGroupedtweets.app */,
-				8FF8C6681AC6DF9A00E68EE9 /* JLGroupedtweetsTests.xctest */,
+				8FF8C64C1AC6DF9A00E68EE9 /* Birds Sing.app */,
+				8FF8C6681AC6DF9A00E68EE9 /* Birds SingTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -206,9 +206,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8FF8C64B1AC6DF9900E68EE9 /* JLGroupedtweets */ = {
+		8FF8C64B1AC6DF9900E68EE9 /* Birds Sing */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8FF8C6721AC6DF9A00E68EE9 /* Build configuration list for PBXNativeTarget "JLGroupedtweets" */;
+			buildConfigurationList = 8FF8C6721AC6DF9A00E68EE9 /* Build configuration list for PBXNativeTarget "Birds Sing" */;
 			buildPhases = (
 				8FF8C6481AC6DF9900E68EE9 /* Sources */,
 				8FF8C6491AC6DF9900E68EE9 /* Frameworks */,
@@ -218,14 +218,14 @@
 			);
 			dependencies = (
 			);
-			name = JLGroupedtweets;
+			name = "Birds Sing";
 			productName = JLGroupedtweets;
-			productReference = 8FF8C64C1AC6DF9A00E68EE9 /* JLGroupedtweets.app */;
+			productReference = 8FF8C64C1AC6DF9A00E68EE9 /* Birds Sing.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8FF8C6671AC6DF9A00E68EE9 /* JLGroupedtweetsTests */ = {
+		8FF8C6671AC6DF9A00E68EE9 /* Birds SingTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8FF8C6751AC6DF9A00E68EE9 /* Build configuration list for PBXNativeTarget "JLGroupedtweetsTests" */;
+			buildConfigurationList = 8FF8C6751AC6DF9A00E68EE9 /* Build configuration list for PBXNativeTarget "Birds SingTests" */;
 			buildPhases = (
 				8FF8C6641AC6DF9A00E68EE9 /* Sources */,
 				8FF8C6651AC6DF9A00E68EE9 /* Frameworks */,
@@ -236,9 +236,9 @@
 			dependencies = (
 				8FF8C66A1AC6DF9A00E68EE9 /* PBXTargetDependency */,
 			);
-			name = JLGroupedtweetsTests;
+			name = "Birds SingTests";
 			productName = JLGroupedtweetsTests;
-			productReference = 8FF8C6681AC6DF9A00E68EE9 /* JLGroupedtweetsTests.xctest */;
+			productReference = 8FF8C6681AC6DF9A00E68EE9 /* Birds SingTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -259,7 +259,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8FF8C6471AC6DF9900E68EE9 /* Build configuration list for PBXProject "JLGroupedtweets" */;
+			buildConfigurationList = 8FF8C6471AC6DF9900E68EE9 /* Build configuration list for PBXProject "Birds Sing" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -272,8 +272,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8FF8C64B1AC6DF9900E68EE9 /* JLGroupedtweets */,
-				8FF8C6671AC6DF9A00E68EE9 /* JLGroupedtweetsTests */,
+				8FF8C64B1AC6DF9900E68EE9 /* Birds Sing */,
+				8FF8C6671AC6DF9A00E68EE9 /* Birds SingTests */,
 			);
 		};
 /* End PBXProject section */
@@ -332,7 +332,7 @@
 /* Begin PBXTargetDependency section */
 		8FF8C66A1AC6DF9A00E68EE9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8FF8C64B1AC6DF9900E68EE9 /* JLGroupedtweets */;
+			target = 8FF8C64B1AC6DF9900E68EE9 /* Birds Sing */;
 			targetProxy = 8FF8C6691AC6DF9A00E68EE9 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -439,7 +439,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = JLGroupedtweets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Birds Sing";
 			};
 			name = Debug;
 		};
@@ -449,7 +449,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = JLGroupedtweets/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Birds Sing";
 			};
 			name = Release;
 		};
@@ -467,7 +467,7 @@
 				);
 				INFOPLIST_FILE = JLGroupedtweetsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Birds SingTests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JLGroupedtweets.app/JLGroupedtweets";
 			};
 			name = Debug;
@@ -482,7 +482,7 @@
 				);
 				INFOPLIST_FILE = JLGroupedtweetsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Birds SingTests";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JLGroupedtweets.app/JLGroupedtweets";
 			};
 			name = Release;
@@ -490,7 +490,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8FF8C6471AC6DF9900E68EE9 /* Build configuration list for PBXProject "JLGroupedtweets" */ = {
+		8FF8C6471AC6DF9900E68EE9 /* Build configuration list for PBXProject "Birds Sing" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8FF8C6701AC6DF9A00E68EE9 /* Debug */,
@@ -499,7 +499,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8FF8C6721AC6DF9A00E68EE9 /* Build configuration list for PBXNativeTarget "JLGroupedtweets" */ = {
+		8FF8C6721AC6DF9A00E68EE9 /* Build configuration list for PBXNativeTarget "Birds Sing" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8FF8C6731AC6DF9A00E68EE9 /* Debug */,
@@ -508,7 +508,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8FF8C6751AC6DF9A00E68EE9 /* Build configuration list for PBXNativeTarget "JLGroupedtweetsTests" */ = {
+		8FF8C6751AC6DF9A00E68EE9 /* Build configuration list for PBXNativeTarget "Birds SingTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8FF8C6761AC6DF9A00E68EE9 /* Debug */,
