@@ -87,7 +87,6 @@ static NSInteger const DEFAULT_ROWS_TO_SHOW = 6;
     self.tweetManager = [[JLITweetManager alloc] init];
     self.tweetManager.delegate = self;
     [self.tweetManager setTwitterAccount];
-
 }
 
 - (void)setupSearchControl {
