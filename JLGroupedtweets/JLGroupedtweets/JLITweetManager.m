@@ -175,20 +175,17 @@
         if(error) NSLog(@"Error: %@", error.localizedDescription);
     } else {
         for (JLITweet *oldTweet in oldTweets) {
-            NSLog(@"Old tweet deleted");
             [self.managedObjectContext deleteObject:oldTweet];
         }
+        NSLog(@"Old tweets deleted");
     }
 }
 
 #pragma mark TwitterAPI connections
 -(void)setupCurrentAccount {
     
-    // Only using main account during testing.
-    // self.currentAccount = self.allAccounts[1];
-    
-    
     if (self.allAccounts.count > 1) {
+        NSLog(@"More than one account found");
         
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Multiple Twitter accounts"
                                                           message:@"Please choose the account you want to use."
@@ -202,8 +199,6 @@
         }
         
         [message show];
-        
-        NSLog(@"More than one account found");
         
     } else self.currentAccount = self.allAccounts[0];
 }
@@ -256,7 +251,6 @@
                                                NSLog(@"Error: %@", error.localizedDescription);
                                            }
                                        }];
-    
 }
 
 -(void)fetchTimeline {
@@ -269,7 +263,6 @@
     
     [self deleteOldTweets];
     NSString *sinceId = [self getLastTweetId];
-    NSLog(@"since id: %@", sinceId);
     
     NSURL *url = [NSURL URLWithString:@"https://api.twitter.com/1.1/statuses/home_timeline.json"];
     NSDictionary *parameters = @{
@@ -293,7 +286,7 @@
                                                NSHTTPURLResponse *urlResponse,
                                                NSError *error) {
         if ([urlResponse statusCode] == 429) {
-            NSLog(@"Max requests per 15 minuter exeeded");
+            NSLog(@"Max requests per 15 minutes exeeded");
             return;
         }
         if (error) {
