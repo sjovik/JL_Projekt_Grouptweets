@@ -4,5 +4,6 @@ Birds sing, they don't tweet - A barebones twitter reader that groups tweets by 
 
 School project for ITHS Göteborg.
 
-![screenshot](/img/ss1.png?raw=true)
-![screenshot](/img/ss2.png?raw=trues)
+![screenshot](/img/screenshot1.png?raw=true)
+![screenshot](/img/screenshot2.png?raw=true)
+![screenshot](/img/screenshot3.png?raw=true)
